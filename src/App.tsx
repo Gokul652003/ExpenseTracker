@@ -1,10 +1,10 @@
+import { BrowserRouter as Router } from "react-router-dom";
+import { DashBoard } from "./dashboard/DashBoard";
 
-function App() {
-  return (
-    <div>
-      <h1 className="text-4xl font-bold text-secondary">DashBoard</h1>
-    </div>
-  );
-}
+const App = () => (
+  <Router>
+    <DashBoard />
+  </Router>
+);
 
 export default App;
