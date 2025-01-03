@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 interface AmountComponentProps {
   color?: string;
@@ -7,13 +7,13 @@ interface AmountComponentProps {
 }
 
 export const AmountComponent = ({
-  color = "#ffffff",
-  label = "Salary",
+  color = '#ffffff',
+  label = 'Salary',
   amount = 5204,
 }: AmountComponentProps) => {
   return (
     <div>
-      <div className={`py-2 px-4 border-l`} style={{borderColor:color}}>
+      <div className={`py-2 px-4 border-l`} style={{ borderColor: color }}>
         <div className="font-primary font-medium text-base text-secondary">
           {label}
         </div>
@@ -24,5 +24,3 @@ export const AmountComponent = ({
     </div>
   );
 };
-
-

@@ -1,6 +1,6 @@
- import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 
-import {AmountComponent} from './AmountComponent';
+import { AmountComponent } from './AmountComponent';
 
 const meta = {
   component: AmountComponent,
@@ -11,9 +11,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args:{
-    color:"#564781",
-    label:"Business",
-    amount:2345
-  }
+  args: {
+    color: '#564781',
+    label: 'Business',
+    amount: 2345,
+  },
 };

@@ -8,13 +8,10 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-<<<<<<< HEAD
     "prepare": "husky",
-    "format": "npx prettier --write ./"
-=======
+    "format": "npx prettier --write ./",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
->>>>>>> 581c67b (feat:implement amount component)
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -43,11 +40,8 @@
     "husky": "^9.1.7",
     "lint-staged": "^15.3.0",
     "postcss": "^8.4.49",
-<<<<<<< HEAD
     "prettier": "^3.4.2",
-=======
     "storybook": "^8.4.7",
->>>>>>> 581c67b (feat:implement amount component)
     "tailwindcss": "^3.4.17",
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.18.2",
