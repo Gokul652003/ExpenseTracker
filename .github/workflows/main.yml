@@ -17,11 +17,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Step 2: Set up Node.js
-      - name: Set up Node.js
+      # Step 2: Set up Node.js 18 or higher
+      - name: Set up Node.js 18 or greater
         uses: actions/setup-node@v2
         with:
-          node-version: '16'  # Define the Node.js version for your project (adjust as needed)
+          node-version: '18.x'  # This will select Node.js 18 or the latest version available (18.x or greater)
 
       # Step 3: Install dependencies
       - name: Install dependencies
@@ -37,8 +37,3 @@ jobs:
       - name: Build the app
         run: |
           npm run build  # Build the React app for production
-
-      # Optional: Deploy the app (if needed)
-      # - name: Deploy to Server
-      #   run: |
-      #     # Add your deployment steps here (e.g., upload to a server, or deploy to Netlify, Vercel, etc.)
