@@ -1,9 +1,9 @@
 import React from "react";
 
 interface AmountComponentProps {
-  color: string;
-  label: string;
-  amount: number;
+  color?: string;
+  label?: string;
+  amount?: number;
 }
 
 const AmountComponent = ({
@@ -11,11 +11,9 @@ const AmountComponent = ({
   label = "Salary",
   amount = 5204,
 }: AmountComponentProps) => {
-  const BorderColor = {borderColor:color};
-  console.log(BorderColor)
   return (
     <div>
-      <div className={`py-2 px-4 border-l`} style={BorderColor}>
+      <div className={`py-2 px-4 border-l`} style={{borderColor:color}}>
         <div className="font-primary font-medium text-base text-secondary">
           {label}
         </div>
