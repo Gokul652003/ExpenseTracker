@@ -5,7 +5,7 @@
 
 /* Collection 1 - Mode 1 */
 :root {
-  --primary-font: "Montserrat", serif;
+  --primary-font: 'Montserrat', serif;
   --secondary-color: rgba(169, 169, 169, 1);
   --text-color: rgba(255, 255, 255, 1);
   --random-color-1: rgba(157, 53, 163, 1);
