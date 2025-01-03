@@ -1,4 +1,3 @@
-
 interface AmountComponentProps {
   color?: string;
   label?: string;
