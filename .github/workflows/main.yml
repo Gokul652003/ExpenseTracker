@@ -31,7 +31,7 @@ jobs:
       - name: Run Prettier formatting check
         run: |
           npx prettier --check .  # Check code formatting using Prettier
-        continue-on-error: false 
+         
         
       # Step 5: Build the app
       - name: Build the app
