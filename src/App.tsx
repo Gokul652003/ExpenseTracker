@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom';
 import { DashBoard } from './dashboard/DashBoard';
 import { Transactions } from './transactions/Transaction';
-import { Header } from './page-components/Header';
+import { Header } from './page-components/Header'
 
 const App = () => (
   <Router>
