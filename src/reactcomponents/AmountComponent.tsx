@@ -6,7 +6,7 @@ interface AmountComponentProps {
   amount?: number;
 }
 
-const AmountComponent = ({
+export const AmountComponent = ({
   color = "#ffffff",
   label = "Salary",
   amount = 5204,
@@ -25,4 +25,4 @@ const AmountComponent = ({
   );
 };
 
-export default AmountComponent;
+
