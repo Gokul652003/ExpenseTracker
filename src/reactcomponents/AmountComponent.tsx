@@ -11,7 +11,10 @@ export const AmountComponent = ({
 }: AmountComponentProps) => {
   return (
     <div>
-      <div className={`py-2 px-4 border-l`} style={{ borderColor: color }}>
+      <div
+        className="py-2 px-4 border-l border-solid"
+        style={{ borderColor: color }}
+      >
         <div className="font-primary font-medium text-base text-secondary">
           {label}
         </div>
