@@ -5,22 +5,74 @@ import {
   Navigate,
 } from 'react-router-dom';
 import { DashBoard } from './dashboard/DashBoard';
+import SignIn from './auth/SignIn';
+import Login from './auth/Login';
 import { Transactions } from './transactions/Transaction';
-import { Header } from './page-components/Header';
+import NotFound from './auth/NotFound';
+import { useSession } from './Routes/useSession';
 
-const App = () => (
-  <Router>
-    <div className="w-screen h-screen bg-bg">
-      <div className="px-24">
-        <Header />
-      </div>
+function App() {
+  const { loading, session } = useSession();
+  console.log(session);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
+    children,
+  }) => {
+    return session ? <>{children}</> : <Navigate to="/login" />;
+  };
+
+  const AuthRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    return session ? <Navigate to="/dashboard" /> : <>{children}</>;
+  };
+
+  return (
+    <Router>
       <Routes>
+        {/* Auth Routes */}
+        <Route
+          path="/login"
+          element={
+            <AuthRoute>
+              <Login />
+            </AuthRoute>
+          }
+        />
         <Route path="/" element={<Navigate to="/dashboard" />} />
-        <Route path="/dashboard" element={<DashBoard />} />
-        <Route path="/transaction" element={<Transactions />} />
+        <Route
+          path="/signin"
+          element={
+            <AuthRoute>
+              <SignIn />
+            </AuthRoute>
+          }
+        />
+
+        {/* Protected Routes */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashBoard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/transactions"
+          element={
+            <ProtectedRoute>
+              <Transactions />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route path="*" element={<NotFound />} />
       </Routes>
-    </div>
-  </Router>
-);
+    </Router>
+  );
+}
 
 export default App;

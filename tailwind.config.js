@@ -4,6 +4,7 @@ export default {
   theme: {
     extend: {
       colors: {
+        primary: 'var(--primary-color)',
         secondary: 'var(--secondary-color)',
         text: 'var(--text-color)',
         randomOne: 'var(--random-color-1)',
@@ -12,6 +13,7 @@ export default {
         tableBgDark: 'var(--table-bg-dark)',
         border: 'var(--border-color)',
         bg: 'var(--bg-color)',
+        textColor: 'var(--text-color)',
       },
       fontFamily: {
         primary: 'var(--primary-font)',
