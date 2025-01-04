@@ -6,6 +6,7 @@
 /* Collection 1 - Mode 1 */
 :root {
   --primary-font: 'Albert Sans', serif;
+  --primary-color: rgba(35, 131, 226, 1);
   --secondary-color: rgba(169, 169, 169, 1);
   --text-color: rgba(255, 255, 255, 1);
   --random-color-1: rgba(157, 53, 163, 1);
@@ -14,4 +15,8 @@
   --table-bg-dark: rgba(47, 47, 47, 1);
   --border-color: rgba(55, 55, 55, 1);
   --bg-color: rgba(25, 25, 25, 1);
+}
+
+* {
+  font-family: var(--primary-font);
 }

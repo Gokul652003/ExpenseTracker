@@ -4,6 +4,7 @@ import { AmountComponent } from './AmountComponent';
 
 const meta = {
   component: AmountComponent,
+  title: 'Components/AmoutComponent',
 } satisfies Meta<typeof AmountComponent>;
 
 export default meta;
