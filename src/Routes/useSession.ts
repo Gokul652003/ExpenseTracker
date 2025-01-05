@@ -15,5 +15,6 @@ export const useSession = () => {
 
     checkSession();
   }, []);
+
   return { session, loading };
 };
