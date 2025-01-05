@@ -10,24 +10,15 @@ import Login from './auth/Login';
 import { Transactions } from './transactions/Transaction';
 import NotFound from './auth/NotFound';
 import { useSession } from './Routes/useSession';
+import { ProtectedRoute } from './Routes/ProtectedRoute';
+import { AuthRoute } from './Routes/AuthRoute';
 
 function App() {
-  const { loading, session } = useSession();
-  console.log(session);
+  const { loading } = useSession();
 
   if (loading) {
     return <div>Loading...</div>;
   }
-
-  const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
-    children,
-  }) => {
-    return session ? <>{children}</> : <Navigate to="/login" />;
-  };
-
-  const AuthRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    return session ? <Navigate to="/dashboard" /> : <>{children}</>;
-  };
 
   return (
     <Router>

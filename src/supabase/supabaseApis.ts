@@ -14,3 +14,14 @@ export const signInWithNotion = () => {
     provider: 'notion',
   });
 };
+
+export const signUpWithEmailAndPassword = (email: string, password: string) => {
+  return supabase.auth.signUp({
+    email,
+    password,
+  });
+};
+
+export const signInWithEmailAndPassword = (email: string, password: string) => {
+  return supabase.auth.signInWithPassword({ email, password });
+};

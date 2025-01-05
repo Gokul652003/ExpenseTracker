@@ -1,18 +1,64 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { TextField } from '../reactcomponents/TextField/TextField';
 import AuthLayout from './components/AuthLayout';
 import expenseTrackerLogo from '@/assets/expense-tracker-logo.svg';
 import { FcGoogle } from 'react-icons/fc';
 import { RiNotionFill } from 'react-icons/ri';
-import { signInWithGoogle } from '../supabase/supabaseApis';
+import {
+  signInWithEmailAndPassword,
+  signInWithGoogle,
+} from '../supabase/supabaseApis';
+import { SignInInput, useSignInSchema } from './api/signIn';
+import { AuthError } from '@supabase/supabase-js';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { supabase } from '../supabase/supabaseClient';
 
 const Login = () => {
+  const navigate = useNavigate();
+  const [signInError, setSignInError] = useState<AuthError | null>(null);
+
   const GoogleSignIn = () => {
     void signInWithGoogle();
   };
+
+  // Handle form submission
+  const onSubmit = async (data: SignInInput) => {
+    const { error } = await signInWithEmailAndPassword(
+      data.email,
+      data.password,
+    );
+
+    try {
+      if (error) {
+        throw error;
+      }
+
+      const { data: user } = await supabase.auth.getUser();
+      if (user) {
+        navigate('/dashboard');
+      }
+    } catch (error) {
+      const typedError = error as AuthError;
+      setSignInError(typedError);
+    }
+  };
+
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<SignInInput>({
+    resolver: yupResolver(useSignInSchema()),
+  });
+
   return (
     <AuthLayout>
-      <div className="bg-bg h-full px-[168px] py-8 flex items-center justify-center">
+      <form
+        className="bg-bg h-full px-[168px] py-8 flex items-center justify-center"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <div className="flex flex-col gap-7">
           <div>
             <img src={expenseTrackerLogo} alt="Expense Tracker" />
@@ -28,10 +74,24 @@ const Login = () => {
               </p>
             </div>
             <div className="flex flex-col gap-4">
-              <TextField label="Email" />
-              <TextField label="Password" type="password" />
+              <TextField
+                label="Email"
+                {...register('email')}
+                variant={errors.email && 'destructive'}
+                description={errors.email?.message}
+              />
+              <TextField
+                label="Password"
+                type="password"
+                {...register('password')}
+                variant={errors.password && 'destructive'}
+                description={errors.password?.message}
+              />
 
-              <button className="block bg-primary px-10 py-4 rounded-full text-textColor font-primary">
+              <button
+                className="block bg-primary px-10 py-4 rounded-full text-textColor font-primary"
+                type="submit"
+              >
                 Login{' '}
               </button>
               <div className="font-primary text-secondary flex justify-center gap-1">
@@ -40,21 +100,28 @@ const Login = () => {
                   Create new
                 </Link>
               </div>
+              <h1 className="text-red-500">
+                {signInError && signInError.message}
+              </h1>
             </div>
           </div>
           <div className="flex flex-col gap-3">
             <button
               className="flex items-center gap-4 bg-textColor rounded-full justify-center py-3 px-10"
               onClick={GoogleSignIn}
+              type="button"
             >
               <FcGoogle className="w-6 h-6" /> Continue With Google
             </button>
-            <button className="flex items-center gap-4 bg-textColor rounded-full justify-center py-3 px-10">
+            <button
+              className="flex items-center gap-4 bg-textColor rounded-full justify-center py-3 px-10"
+              type="button"
+            >
               <RiNotionFill className="w-6 h-6" /> Continue With Notion
             </button>
           </div>
         </div>
-      </div>
+      </form>
     </AuthLayout>
   );
 };
