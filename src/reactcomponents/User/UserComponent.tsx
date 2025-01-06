@@ -1,30 +1,30 @@
-import userAvatar from '../../assets/userAvatar.png';
+import userAvatharPlaceholder from '@/assets/userAvatar.png';
 
 interface UserComponentProps {
-  useravatar?: string;
-  username?: string;
-  emailid?: string;
-  showname?: boolean;
+  userAvatar?: string;
+  userName?: string;
+  emailId?: string;
+  isDashboardOpen?: boolean;
 }
 export const UserComponent = ({
-  useravatar = userAvatar,
-  username = 'Kin-Su',
-  emailid = 'kinsu@gmail.com',
-  showname = false,
+  userAvatar = userAvatharPlaceholder,
+  userName = 'Kin-Su',
+  emailId = 'kinsu@gmail.com',
+  isDashboardOpen = false,
 }: UserComponentProps) => {
   return (
     <div>
       <div className="flex gap-5 items-center">
         <div>
-          <img src={useravatar} className="w-10 h-10 rounded-full" />
+          <img src={userAvatar} className="size-10 rounded-full" />
         </div>
-        {showname && (
+        {isDashboardOpen && (
           <div className="flex flex-col">
-            <span className="font-primary font-medium text-lg text-textColor">
-              {username}
+            <span className="font-medium text-lg text-textColor">
+              {userName}
             </span>
-            <span className="font-primary font-normal text-base text-secondary">
-              {emailid}
+            <span className="font-normal text-base text-secondary">
+              {emailId}
             </span>
           </div>
         )}

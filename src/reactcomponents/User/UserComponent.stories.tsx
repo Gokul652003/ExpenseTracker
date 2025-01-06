@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import useravatar from './assets/useravatar.jpeg';
+import userAvatarPlaceholder from './assets/userAvatar.jpeg';
 
 import { UserComponent } from './UserComponent';
 
@@ -13,9 +13,17 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    useravatar: useravatar,
-    username: 'Monica',
-    emailid: 'monica@gmail.com',
-    showname: true,
+    userAvatar: userAvatarPlaceholder,
+    userName: 'Monica',
+    emailId: 'monica@gmail.com',
+    isDashboardOpen: true,
+  },
+};
+export const Close: Story = {
+  args: {
+    userAvatar: userAvatarPlaceholder,
+    userName: 'Monica',
+    emailId: 'monica@gmail.com',
+    isDashboardOpen: false,
   },
 };
