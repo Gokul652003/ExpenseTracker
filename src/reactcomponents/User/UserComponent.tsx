@@ -16,7 +16,7 @@ export const UserComponent = ({
     <div>
       <div className="flex gap-5 items-center">
         <div>
-          <img src={useravatar} className="w-10 h-10 rounded-full"/>
+          <img src={useravatar} className="w-10 h-10 rounded-full" />
         </div>
         {showname && (
           <div className="flex flex-col">
