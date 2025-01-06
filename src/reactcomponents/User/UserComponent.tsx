@@ -1,4 +1,4 @@
-import userAvatharPlaceholder from '@/assets/userAvatar.png';
+import userAvatarPlaceholder from './assets/userAvatar.jpeg';
 
 interface UserComponentProps {
   userAvatar?: string;
@@ -6,8 +6,9 @@ interface UserComponentProps {
   emailId?: string;
   isDashboardOpen?: boolean;
 }
+
 export const UserComponent = ({
-  userAvatar = userAvatharPlaceholder,
+  userAvatar = userAvatarPlaceholder,
   userName = 'Kin-Su',
   emailId = 'kinsu@gmail.com',
   isDashboardOpen = false,
