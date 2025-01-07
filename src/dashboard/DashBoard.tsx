@@ -1,3 +1,4 @@
+import LineChart from '../Chart/Chat';
 import { Button } from './components/Button';
 import { Card } from './components/Card';
 
@@ -63,7 +64,9 @@ export const DashBoard = () => {
                 ))}
               </div>
             </div>
-            <div></div>
+            <div>
+              <LineChart />
+            </div>
           </div>
         </div>
       </div>

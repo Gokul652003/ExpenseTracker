@@ -11,7 +11,9 @@ import { UserComponent } from '../react-components/User/UserComponent';
 const Sidebar: React.FC = () => {
   const navigate = useNavigate();
   return (
-    <div className={`bg-bg text-white shadow-lg border-r border-border p-10`}>
+    <div
+      className={`bg-bg text-white shadow-lg border-r border-border p-10 h-full`}
+    >
       <div className="flex flex-col justify-between h-full items-center">
         <div className="flex flex-col gap-6">
           <NavLink to="/dashboard" className="p-2">
