@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { TextField } from '../reactcomponents/TextField/TextField';
+import { TextField } from '../react-components/TextField/TextField';
 import AuthLayout from './components/AuthLayout';
 import expenseTrackerLogo from '@/assets/expense-tracker-logo.svg';
 import { FcGoogle } from 'react-icons/fc';

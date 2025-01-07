@@ -4,7 +4,7 @@ import { TextField } from './TextField';
 type Story = StoryObj<typeof TextField>;
 
 const meta: Meta<typeof TextField> = {
-  title: 'react/Components/TextField',
+  title: 'Components/TextField',
   component: TextField,
   decorators: [(Story) => <Story />],
   argTypes: {

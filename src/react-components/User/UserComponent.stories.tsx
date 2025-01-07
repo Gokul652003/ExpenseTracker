@@ -5,6 +5,7 @@ import { UserComponent } from './UserComponent';
 
 const meta = {
   component: UserComponent,
+  title: 'Components/UserComponent',
 } satisfies Meta<typeof UserComponent>;
 
 export default meta;
