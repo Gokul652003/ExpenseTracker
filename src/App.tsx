@@ -12,6 +12,8 @@ import NotFound from './auth/NotFound';
 import { useSession } from './Routes/useSession';
 import { ProtectedRoute } from './Routes/ProtectedRoute';
 import { AuthRoute } from './Routes/AuthRoute';
+import { ProtectedLayout } from './Routes/ProtectedLayout';
+import Profile from './profile/Profile';
 
 function App() {
   const { loading } = useSession();
@@ -47,7 +49,9 @@ function App() {
           path="/dashboard"
           element={
             <ProtectedRoute>
-              <DashBoard />
+              <ProtectedLayout>
+                <DashBoard />
+              </ProtectedLayout>
             </ProtectedRoute>
           }
         />
@@ -55,7 +59,19 @@ function App() {
           path="/transactions"
           element={
             <ProtectedRoute>
-              <Transactions />
+              <ProtectedLayout>
+                <Transactions />
+              </ProtectedLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <ProtectedLayout>
+                <Profile />
+              </ProtectedLayout>
             </ProtectedRoute>
           }
         />
