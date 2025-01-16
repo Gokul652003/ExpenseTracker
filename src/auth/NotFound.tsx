@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 const NotFound = () => {
   const navigate = useNavigate();
   return (
-    <div className="w-screen h-screen bg-bg bg-[url('/home/admn/expensetracker/src/auth/assets/404.svg')] bg-center bg-no-repeat flex justify-center items-center">
+    <div className="w-screen h-screen bg-bg bg-[url('@/auth/assets/404.svg')] bg-center bg-no-repeat flex justify-center items-center">
       <div className="flex flex-col gap-14">
         <div className="flex flex-col gap-12 items-center">
           <h1 className="text-[52px] text-textColor">Page Not Found</h1>

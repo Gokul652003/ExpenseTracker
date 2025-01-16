@@ -7,9 +7,11 @@ import transactionIcon from '@/assets/transaction.svg';
 // import navIconFour from '@/assets/navIconFour.svg';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { UserComponent } from '../react-components/User/UserComponent';
+import { useSession } from '../Routes/useSession';
 
 const Sidebar: React.FC = () => {
   const navigate = useNavigate();
+  const { profile } = useSession();
   return (
     <div
       className={`bg-bg text-white shadow-lg border-r border-border p-10 h-full`}
@@ -47,6 +49,7 @@ const Sidebar: React.FC = () => {
               <UserComponent
                 isDashboardOpen={false}
                 onClick={() => navigate('/profile')}
+                userAvatar={profile}
               />
             </div>
           )}

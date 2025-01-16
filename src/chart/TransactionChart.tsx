@@ -22,7 +22,7 @@ ChartJS.register(
   Legend,
 );
 
-const LineChart: React.FC = () => {
+export const TransactionChart: React.FC = () => {
   const primaryFont = getComputedStyle(document.documentElement)
     .getPropertyValue('--primary-font')
     .trim();
@@ -138,12 +138,12 @@ const LineChart: React.FC = () => {
         ],
         borderColor: '#fff',
         backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        borderWidth: 2, // Line width
-        pointBackgroundColor: 'rgba(75, 192, 192, 1)', // Point color
-        pointBorderColor: '#fff', // Point border color
-        pointBorderWidth: 2, // Point border width
-        pointRadius: 5, // Point size
-        tension: 0.4, // Smooth line
+        borderWidth: 2,
+        pointBackgroundColor: 'rgba(47, 47, 47, 1)',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        pointRadius: 5,
+        tension: 0.5,
         fill: 'origin',
       },
     ],
@@ -229,5 +229,3 @@ const LineChart: React.FC = () => {
     </div>
   );
 };
-
-export default LineChart;
