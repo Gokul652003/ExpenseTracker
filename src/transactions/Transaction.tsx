@@ -1,3 +1,5 @@
+import { TransactionTable } from './components/TransactionTable';
+
 export const Transactions = () => {
   return (
     <div>
@@ -9,6 +11,9 @@ export const Transactions = () => {
           View and manage transactions, track income, expenses, and balance, and
           filter or sort by categories.
         </p>
+      </div>
+      <div className="p-8">
+        <TransactionTable />
       </div>
     </div>
   );
