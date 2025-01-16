@@ -1,6 +1,6 @@
 import { Table } from '@tanstack/table-core';
 import { UserType } from './type';
-import deleteImage from '/home/admn/expensetracker/src/assets/deleteTransactionImg.svg';
+import deleteImage from '@/assets/deleteTransactionImg.svg';
 
 interface DeleteTransactionModalProp {
   selectedIds: string[];

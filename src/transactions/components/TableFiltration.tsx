@@ -1,6 +1,6 @@
 import { Table } from '@tanstack/table-core';
 import { UserType } from './type';
-import downIcon from '/home/admn/expensetracker/src/assets/CaretCircleDown.svg';
+import downIcon from '@/assets/CaretCircleDown.svg';
 import { useState } from 'react';
 import { DeleteTransactionModal } from './DeleteTransactionModal';
 

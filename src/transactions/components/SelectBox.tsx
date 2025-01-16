@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import downArrow from '/home/admn/expensetracker/src/assets/CaretDown.svg';
+import downArrow from '@/assets/CaretDown.svg';
 
 interface Option {
   label: string;
