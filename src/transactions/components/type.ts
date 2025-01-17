@@ -1,19 +1,19 @@
 import { Column, Row, Table } from '@tanstack/table-core';
 
-export interface UserType {
+export interface TransactionTableData {
   id: string;
-  date: string;
   category: string;
-  amount: number;
+  amount: string;
   type: string;
   notes: string;
+  date: string;
 }
 
 export interface CellProp {
   getValue: () => string;
-  row: Row<UserType>;
-  column: Column<UserType>;
-  table: Table<UserType>;
+  row: Row<TransactionTableData>;
+  column: Column<TransactionTableData>;
+  table: Table<TransactionTableData>;
 }
 
 export interface CustomTableMeta {

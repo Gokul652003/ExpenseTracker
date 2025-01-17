@@ -3,6 +3,7 @@ import { CellProp, CustomTableMeta } from './type';
 
 export const EditableDate = ({ getValue, row, column, table }: CellProp) => {
   const initialValues = getValue();
+  console.log(initialValues);
   const [value, setValue] = useState(initialValues);
   const [isEditing, setIsEditing] = useState(false);
 

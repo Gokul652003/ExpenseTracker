@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   useReactTable,
   flexRender,
@@ -6,13 +6,14 @@ import {
   getCoreRowModel,
   getFilteredRowModel,
 } from '@tanstack/react-table';
-import { transactionTableData } from './data';
 import EditableCell from './EditableCell';
 import { EditableSelectField } from './EditableSelectField';
 import { EditableNote } from './EditableNote';
 import { EditableDate } from './EditableDate';
-import { UserType } from './type';
 import { TableFiltrations } from './TableFiltration';
+import { useFetchUserData } from '../../supabase/supabaseApis';
+import { supabase } from '../../supabase/supabaseClient';
+import { TransactionTableData } from './type';
 
 const transactionType: { value: string; label: string }[] = [
   { value: 'Income', label: 'Income' },
@@ -27,7 +28,7 @@ const CatagoryOptions: { value: string; label: string }[] = [
   { value: 'Freelance', label: 'Freelance' },
 ];
 
-const columns: ColumnDef<UserType, string>[] = [
+const columns: ColumnDef<TransactionTableData, string>[] = [
   { accessorKey: 'date', header: 'Date', cell: EditableDate },
   {
     accessorKey: 'category',
@@ -50,29 +51,51 @@ const columns: ColumnDef<UserType, string>[] = [
 type ColumnFilter = { id: string; value: string };
 
 export const TransactionTable = () => {
-  const [data, setData] = useState<UserType[]>(transactionTableData);
+  const [data, setData] = useState<TransactionTableData[]>([]); // Initially empty
   const [sessionFilter, setSessionFiltes] = useState<ColumnFilter[]>([]);
   const [tableFilter, setTableFilter] = useState<string>('');
+  const backendData = useFetchUserData(); // Fetch data from backend
+
+  useEffect(() => {
+    if (backendData) {
+      setData(backendData); // Set the fetched data
+    }
+  }, [backendData]);
 
   const table = useReactTable({
-    data,
+    data: data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     state: { globalFilter: tableFilter, columnFilters: sessionFilter },
     onGlobalFilterChange: setTableFilter,
     meta: {
-      updateData: (rowIndex: number, columnId: keyof UserType, value: string) =>
+      updateData: async (
+        rowIndex: number,
+        columnId: keyof TransactionTableData,
+        value: string,
+      ) => {
         setData((prevData) =>
           prevData.map((row, index) =>
             index === rowIndex
               ? { ...prevData[rowIndex], [columnId]: value }
               : row,
           ),
-        ),
+        );
+
+        const updatedRow = data[rowIndex];
+        const { error } = await supabase
+          .from('transaction')
+          .update({ [columnId]: value })
+          .eq('id', updatedRow.id);
+
+        if (error) {
+          console.error('Error updating row:', error.message);
+        }
+      },
     },
   });
-  console.log(data);
+
   return (
     <div className="flex flex-col gap-4">
       <TableFiltrations

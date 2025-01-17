@@ -49,6 +49,7 @@ export interface TextFieldProps
       | 'inputMode'
       | 'onKeyDown'
       | 'onPaste'
+      | 'defaultValue'
     >,
     VariantProps<typeof variants> {
   leftIcon?: React.ReactNode;
@@ -69,6 +70,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
       required,
       rightIcon,
       variant,
+      defaultValue,
       ...rest
     },
     ref,
@@ -100,6 +102,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
             ref={ref}
             required={required}
             id={inputID}
+            defaultValue={defaultValue}
           />
           {rightIcon && <InputIcon position="right" icon={rightIcon} />}
         </div>

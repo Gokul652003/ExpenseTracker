@@ -1,8 +1,10 @@
 import { Table } from '@tanstack/table-core';
-import { UserType } from './type';
 import downIcon from '@/assets/CaretCircleDown.svg';
 import { useState } from 'react';
 import { DeleteTransactionModal } from './DeleteTransactionModal';
+import { supabase } from '../../supabase/supabaseClient';
+import { useSession } from '../../Routes/useSession';
+import { TransactionTableData } from './type';
 
 type SesstionFilter = {
   id: string;
@@ -13,8 +15,8 @@ type TableFitrationProps = {
   setSessionFiters: React.Dispatch<React.SetStateAction<SesstionFilter[]>>;
   tableFilters: string;
   setTableFilters: React.Dispatch<React.SetStateAction<string>>;
-  setData: React.Dispatch<React.SetStateAction<UserType[]>>;
-  table: Table<UserType>;
+  setData: React.Dispatch<React.SetStateAction<TransactionTableData[]>>;
+  table: Table<TransactionTableData>;
 };
 
 export const TableFiltrations: React.FC<TableFitrationProps> = ({
@@ -43,28 +45,64 @@ export const TableFiltrations: React.FC<TableFitrationProps> = ({
     });
   };
 
-  const getFormattedDate = () => {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+  // const getFormattedDate = () => {
+  //   const today = new Date();
+  //   const year = today.getFullYear();
+  //   const month = String(today.getMonth() + 1).padStart(2, '0');
+  //   const day = String(today.getDate()).padStart(2, '0');
+  //   return `${year}-${month}-${day}`;
+  // };
+  const { session } = useSession();
+
+  const addTransaction = async (transactionData: {
+    category: string;
+    amount: string;
+    type: string;
+    notes: string;
+    date: string;
+  }) => {
+    const { data, error } = await supabase
+      .from('transaction')
+      .insert({
+        category: transactionData.category,
+        amount: transactionData.amount,
+        type: transactionData.type,
+        notes: transactionData.notes,
+        date: transactionData.date,
+        user_id: session?.user?.id,
+      })
+      .select();
+
+    if (error) {
+      console.error('Error adding transaction:', error.message);
+      return;
+    }
+
+    if (data) {
+      console.log('Transaction added successfully:', data);
+
+      // Update the table state dynamically
+      setData((prevData) => [
+        {
+          id: data[0].id, // Use the ID from the inserted transaction
+          ...transactionData, // Spread the input data into the new state
+        },
+        ...prevData,
+      ]);
+    }
   };
 
-  const addTransaction = () => {
-    setData((prevData) => [
-      {
-        id: (prevData.length + 1).toString(),
-        date: getFormattedDate(),
-        category: '',
-        amount: 0,
-        type: '',
-        notes: '',
-      },
-      ...prevData,
-    ]);
-  };
+  const handleAddTransaction = () => {
+    const newTransaction = {
+      category: '', // Replace with dynamic input values
+      amount: '0',
+      type: '',
+      notes: '',
+      date: new Date().toISOString(),
+    };
 
+    addTransaction(newTransaction);
+  };
   const renderDropdown = (
     id: string,
     placeholder: string,
@@ -137,7 +175,7 @@ export const TableFiltrations: React.FC<TableFitrationProps> = ({
         )}
         <button
           className="px-6  bg-primary text-textColor rounded"
-          onClick={addTransaction}
+          onClick={handleAddTransaction}
         >
           New
         </button>
