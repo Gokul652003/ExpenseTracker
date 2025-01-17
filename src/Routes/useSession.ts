@@ -16,7 +16,7 @@ export const useSession = () => {
     };
 
     checkSession();
-  }, []);
+  }, [setSession]);
 
   return { session, loading, profile };
 };
