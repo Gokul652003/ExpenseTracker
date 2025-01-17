@@ -1,4 +1,7 @@
-export default async function getCroppedImg(imageSrc: string, crop: Crop): Promise<string | null> {
+export default async function getCroppedImg(
+  imageSrc: string,
+  crop: Crop,
+): Promise<string | null> {
   const image = await createImage(imageSrc);
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');

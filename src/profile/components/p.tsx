@@ -22,7 +22,9 @@ export const ProfileUploaderModal = ({
   const [image, setImage] = useState<string | null>(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState<string | null>(null);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState<string | null>(
+    null,
+  );
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -32,13 +34,19 @@ export const ProfileUploaderModal = ({
     }
   };
 
-  const onCropComplete = useCallback((_: unknown, croppedAreaPixels: React.SetStateAction<string | null>) => {
-    setCroppedAreaPixels(croppedAreaPixels);
-  }, []);
+  const onCropComplete = useCallback(
+    (_: unknown, croppedAreaPixels: React.SetStateAction<string | null>) => {
+      setCroppedAreaPixels(croppedAreaPixels);
+    },
+    [],
+  );
 
   const handleSave = async () => {
     if (image && croppedAreaPixels) {
-      const croppedImg = await getCroppedImg(image, croppedAreaPixels as unknown as Crop);
+      const croppedImg = await getCroppedImg(
+        image,
+        croppedAreaPixels as unknown as Crop,
+      );
       setProfileImage(croppedImg);
       setIsOpen(false);
     }
@@ -60,7 +68,7 @@ export const ProfileUploaderModal = ({
               aspect={1}
               onCropChange={setCrop}
               onZoomChange={setZoom}
-              onCropComplete={onCropComplete as ()=>void}
+              onCropComplete={onCropComplete as () => void}
             />
             <div className="absolute bottom-4 left-4 right-4 flex items-center gap-4">
               <input

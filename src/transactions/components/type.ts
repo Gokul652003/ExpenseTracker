@@ -1,6 +1,5 @@
 import { Column, Row, Table } from '@tanstack/table-core';
 
-
 export interface TransactionTableData {
   id: string;
   category: string;

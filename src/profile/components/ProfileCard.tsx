@@ -31,7 +31,7 @@ const ProfileCard = () => {
     void signOut();
     redirect('/');
   };
-  
+
   return (
     <div className="p-8 flex flex-col gap-8 w-[800px]">
       <h1 className="text-textColor text-[32px] font-medium">Edit Profile</h1>

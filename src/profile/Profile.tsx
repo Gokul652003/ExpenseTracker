@@ -1,4 +1,4 @@
-import ProfileCard from "./components/ProfileCard";
+import ProfileCard from './components/ProfileCard';
 
 const Profile = () => {
   return (
@@ -13,7 +13,6 @@ const Profile = () => {
         </span>
       </div>
       <ProfileCard />
-      
     </div>
   );
 };

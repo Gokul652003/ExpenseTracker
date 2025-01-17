@@ -96,7 +96,6 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
         <div className={styles.inputContainer} aria-disabled={disabled}>
           {leftIcon && <InputIcon position="left" icon={leftIcon} />}
           <input
-          
             {...rest}
             className={styles.input}
             disabled={disabled}

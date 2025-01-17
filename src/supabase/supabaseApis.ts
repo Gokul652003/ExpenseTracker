@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSession } from '../Routes/useSession';
-import { TransactionTableData} from '../transactions/components/type';
+import { TransactionTableData } from '../transactions/components/type';
 import { supabase } from './supabaseClient';
 
 export const signInWithGoogle = () => {
@@ -37,9 +37,9 @@ const fetchUserProfile = async (
   userId: string,
 ): Promise<TransactionTableData[] | null> => {
   const { data, error } = await supabase
-    .from('transaction') 
+    .from('transaction')
     .select('id,category,date,type,amount,notes')
-    .eq('user_id', userId); 
+    .eq('user_id', userId);
 
   console.log(data);
 
@@ -48,19 +48,18 @@ const fetchUserProfile = async (
     return null;
   }
 
-  
-  return data as TransactionTableData[]; 
+  return data as TransactionTableData[];
 };
 
 export const useFetchUserData = () => {
-  const { session } = useSession(); 
-  const [userData, setUserData] = useState<TransactionTableData[] | null>(null); 
+  const { session } = useSession();
+  const [userData, setUserData] = useState<TransactionTableData[] | null>(null);
 
   useEffect(() => {
     const fetchUserDataFromSession = async () => {
       if (session?.user?.id) {
-        const data = await fetchUserProfile(session.user.id); 
-        setUserData(data); 
+        const data = await fetchUserProfile(session.user.id);
+        setUserData(data);
       }
     };
 

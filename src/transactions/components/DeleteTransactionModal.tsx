@@ -14,7 +14,6 @@ export const DeleteTransactionModal = ({
   setData,
   setIsDeleteModalOpen,
 }: DeleteTransactionModalProp) => {
-
   const handleDeleteRows = async (selectedIds: string[]) => {
     // Delete selected rows from the backend
     const { error } = await supabase
@@ -55,7 +54,7 @@ export const DeleteTransactionModal = ({
           </button>
           <button
             className="px-10 py-3 bg-primary rounded-full text-textColor flex-1"
-            onClick={()=>void handleDeleteRows(selectedIds)}
+            onClick={() => void handleDeleteRows(selectedIds)}
           >
             Delete
           </button>

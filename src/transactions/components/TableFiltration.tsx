@@ -54,56 +54,55 @@ export const TableFiltrations: React.FC<TableFitrationProps> = ({
   // };
   const { session } = useSession();
 
-const addTransaction = async (transactionData: {
-  category: string;
-  amount: string;
-  type: string;
-  notes: string;
-  date: string;
-}) => {
-  const { data, error } = await supabase
-    .from('transaction')
-    .insert({
-      category: transactionData.category,
-      amount: transactionData.amount,
-      type: transactionData.type,
-      notes: transactionData.notes,
-      date:transactionData.date,
-      user_id: session?.user?.id, 
-    })
-    .select(); 
+  const addTransaction = async (transactionData: {
+    category: string;
+    amount: string;
+    type: string;
+    notes: string;
+    date: string;
+  }) => {
+    const { data, error } = await supabase
+      .from('transaction')
+      .insert({
+        category: transactionData.category,
+        amount: transactionData.amount,
+        type: transactionData.type,
+        notes: transactionData.notes,
+        date: transactionData.date,
+        user_id: session?.user?.id,
+      })
+      .select();
 
-  if (error) {
-    console.error('Error adding transaction:', error.message);
-    return;
-  }
+    if (error) {
+      console.error('Error adding transaction:', error.message);
+      return;
+    }
 
-  if (data) {
-    console.log('Transaction added successfully:', data);
+    if (data) {
+      console.log('Transaction added successfully:', data);
 
-    // Update the table state dynamically
-    setData((prevData) => [
-      {
-        id: data[0].id, // Use the ID from the inserted transaction
-        ...transactionData, // Spread the input data into the new state
-      },
-      ...prevData,
-    ]);
-  }
-};
-
-
-const handleAddTransaction = () => {
-  const newTransaction = {
-    category: '', // Replace with dynamic input values
-    amount: '0',
-    type: '',
-    notes: '',
-    date:new Date().toISOString(),
+      // Update the table state dynamically
+      setData((prevData) => [
+        {
+          id: data[0].id, // Use the ID from the inserted transaction
+          ...transactionData, // Spread the input data into the new state
+        },
+        ...prevData,
+      ]);
+    }
   };
 
-  addTransaction(newTransaction);
-};
+  const handleAddTransaction = () => {
+    const newTransaction = {
+      category: '', // Replace with dynamic input values
+      amount: '0',
+      type: '',
+      notes: '',
+      date: new Date().toISOString(),
+    };
+
+    addTransaction(newTransaction);
+  };
   const renderDropdown = (
     id: string,
     placeholder: string,
