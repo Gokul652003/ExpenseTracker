@@ -7,12 +7,11 @@ interface CategoryComponentProps {
   label?: string;
 }
 export const CategoryComponent = ({
-  color = 'grey',
   label = 'Food',
 }: CategoryComponentProps) => {
-  const [inputColor,setInputColor]=useState("rgba(169, 169, 169, 1)");
-  const [isContentEditable,setIsContentEditable]=useState(false);
-  console.log(isContentEditable)
+  const [inputColor, setInputColor] = useState<string>(
+    'rgba(169, 169, 169, 1)',
+  );
   return (
     <div className="flex justify-between items-center">
       <div className="flex gap-1.5 items-center">
@@ -23,9 +22,22 @@ export const CategoryComponent = ({
           <div
             className="rounded w-3.5 h-3.5"
             style={{ backgroundColor: inputColor }}
-          ><input type='color' className="rounded w-3.5 h-3.5 opacity-0 block" onChange={(e)=>{setInputColor(e.target.value)}}/></div>
+          >
+            <input
+              type="color"
+              className="rounded w-3.5 h-3.5 opacity-0 block"
+              onChange={(e) => {
+                setInputColor(e.target.value);
+              }}
+            />
+          </div>
           <div className="flex ">
-            <div className="font-normal text-secondary text-base" contentEditable={isContentEditable} onClick={()=>setIsContentEditable(!isContentEditable)} >{label}</div>
+            <div
+              className="font-normal text-secondary text-base outline-none"
+              contentEditable={true}
+            >
+              {label}
+            </div>
           </div>
         </div>
       </div>
