@@ -8,10 +8,12 @@ import transactionIcon from '@/assets/transaction.svg';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { UserComponent } from '../react-components/User/UserComponent';
 import { useSession } from '../Routes/useSession';
+import catagoryLogo from '@/assets/catagory.svg';
+import catagoryActiveLogo from '@/assets/catagoryActive.svg';
 
 const Sidebar: React.FC = () => {
   const navigate = useNavigate();
-  const { profile } = useSession();
+  const { profile, loading } = useSession();
   return (
     <div
       className={`bg-bg text-white shadow-lg border-r border-border p-10 h-full`}
@@ -40,6 +42,17 @@ const Sidebar: React.FC = () => {
               </div>
             )}
           </NavLink>
+          <NavLink to="/catagory" className="p-2">
+            {({ isActive }) => (
+              <div className={`p-1 ${isActive && 'bg-white rounded-full'}`}>
+                <img
+                  src={isActive ? catagoryActiveLogo : catagoryLogo}
+                  alt="Transactions Icon"
+                  className="w-6 h-6"
+                />
+              </div>
+            )}
+          </NavLink>
         </div>
         <NavLink to="/profile">
           {({ isActive }) => (
@@ -50,6 +63,7 @@ const Sidebar: React.FC = () => {
                 isDashboardOpen={false}
                 onClick={() => navigate('/profile')}
                 userAvatar={profile}
+                isLoading={loading}
               />
             </div>
           )}

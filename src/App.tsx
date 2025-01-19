@@ -14,6 +14,7 @@ import { ProtectedRoute } from './Routes/ProtectedRoute';
 import { AuthRoute } from './Routes/AuthRoute';
 import { ProtectedLayout } from './Routes/ProtectedLayout';
 import Profile from './profile/Profile';
+import Catagory from './catagory/Catagory';
 
 function App() {
   const { loading } = useSession();
@@ -71,6 +72,16 @@ function App() {
             <ProtectedRoute>
               <ProtectedLayout>
                 <Profile />
+              </ProtectedLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/catagory"
+          element={
+            <ProtectedRoute>
+              <ProtectedLayout>
+                <Catagory />
               </ProtectedLayout>
             </ProtectedRoute>
           }
