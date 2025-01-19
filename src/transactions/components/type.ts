@@ -9,6 +9,12 @@ export interface TransactionTableData {
   date: string;
 }
 
+export interface UserCategoryProp {
+  id: string;
+  category: string;
+  colour: string;
+}
+
 export interface CellProp {
   getValue: () => string;
   row: Row<TransactionTableData>;

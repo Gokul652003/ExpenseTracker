@@ -20,47 +20,50 @@ const transactionType: { value: string; label: string }[] = [
   { value: 'Expense', label: 'Expense' },
 ];
 
-const CatagoryOptions: { value: string; label: string }[] = [
-  { value: 'Groceries', label: 'Groceries' },
-  { value: 'Salary', label: 'Salary' },
-  { value: 'Transport', label: 'Transport' },
-  { value: 'Dining', label: 'Dining' },
-  { value: 'Freelance', label: 'Freelance' },
-];
-
-const columns: ColumnDef<TransactionTableData, string>[] = [
-  { accessorKey: 'date', header: 'Date', cell: EditableDate },
-  {
-    accessorKey: 'category',
-    header: 'Category',
-    cell: (props) => (
-      <EditableSelectField {...props} options={CatagoryOptions} />
-    ),
-  },
-  { accessorKey: 'amount', header: 'Amount', cell: EditableCell },
-  {
-    accessorKey: 'type',
-    header: 'Type',
-    cell: (props) => (
-      <EditableSelectField {...props} options={transactionType} />
-    ),
-  },
-  { accessorKey: 'notes', header: 'Notes', cell: EditableNote },
-];
-
 type ColumnFilter = { id: string; value: string };
 
 export const TransactionTable = () => {
+  const { userCategory } = useFetchUserData();
+
+  const formattedOptions = userCategory?.map(
+    (category: { id: string; category: string; colour: string }) => ({
+      value: category.category,
+      label: category.category,
+      colour: category.colour,
+    }),
+  );
+
+  const columns: ColumnDef<TransactionTableData, string>[] = [
+    { accessorKey: 'date', header: 'Date', cell: EditableDate },
+    {
+      accessorKey: 'category',
+      header: 'Category',
+      cell: (props) => (
+        <EditableSelectField {...props} options={formattedOptions ?? []} />
+      ),
+    },
+    { accessorKey: 'amount', header: 'Amount', cell: EditableCell },
+    {
+      accessorKey: 'type',
+      header: 'Type',
+      cell: (props) => (
+        <EditableSelectField {...props} options={transactionType} />
+      ),
+    },
+    { accessorKey: 'notes', header: 'Notes', cell: EditableNote },
+  ];
+
   const [data, setData] = useState<TransactionTableData[]>([]); // Initially empty
   const [sessionFilter, setSessionFiltes] = useState<ColumnFilter[]>([]);
   const [tableFilter, setTableFilter] = useState<string>('');
-  const backendData = useFetchUserData(); // Fetch data from backend
+  const { userData, loading } = useFetchUserData();
 
   useEffect(() => {
-    if (backendData) {
-      setData(backendData); // Set the fetched data
+    console.log(userData, 'running');
+    if (userData) {
+      setData(userData);
     }
-  }, [backendData]);
+  }, [userData]);
 
   const table = useReactTable({
     data: data,
@@ -95,6 +98,10 @@ export const TransactionTable = () => {
       },
     },
   });
+
+  if (loading) {
+    return <div className="text-text text-4xl">Loading...</div>;
+  }
 
   return (
     <div className="flex flex-col gap-4">

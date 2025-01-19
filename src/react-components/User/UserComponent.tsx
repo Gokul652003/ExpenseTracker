@@ -1,4 +1,5 @@
 import userAvatarPlaceholder from './assets/userAvatar.jpeg';
+import lodingGif from '@/assets/loading-gif.gif';
 
 interface UserComponentProps {
   userAvatar?: string;
@@ -6,6 +7,7 @@ interface UserComponentProps {
   emailId?: string;
   isDashboardOpen?: boolean;
   onClick?: () => void;
+  isLoading?: boolean;
 }
 
 export const UserComponent = ({
@@ -14,11 +16,18 @@ export const UserComponent = ({
   emailId = 'kinsu@gmail.com',
   isDashboardOpen = false,
   onClick,
+  isLoading,
 }: UserComponentProps) => {
   return (
     <div className="flex gap-5 items-center" onClick={onClick}>
       <div>
-        <img src={userAvatar} className="size-10 rounded-full" />
+        {isLoading ? (
+          <p className="">
+            <img src={lodingGif} className="size-10 " />
+          </p>
+        ) : (
+          <img src={userAvatar} className="size-10 rounded-full" />
+        )}
       </div>
       {isDashboardOpen && (
         <div className="flex flex-col">

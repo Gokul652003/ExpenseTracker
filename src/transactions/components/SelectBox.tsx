@@ -4,6 +4,7 @@ import downArrow from '@/assets/CaretDown.svg';
 interface Option {
   label: string;
   value: string;
+  colour?: string;
 }
 
 interface CustomSelectProps {
@@ -21,13 +22,19 @@ export const SelectBox: React.FC<CustomSelectProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const selectRef = useRef<HTMLDivElement>(null);
+  // const [selectboxBg, setSlectBoxBg] = useState<string>('#9D35A3');
+
+  const selectBoxBg = options.filter((item) => item.value == value);
+  console.log(selectBoxBg[0]);
 
   const handleOptionClick = (
-    selectedValue: string,
+    selectedValue: Option,
     event: React.MouseEvent,
   ) => {
     event.stopPropagation(); // Prevent the event from bubbling up to the parent div
-    onChange(selectedValue);
+    onChange(selectedValue.value);
+
+    // setSlectBoxBg(selectedValue?.colour??'');
     setIsOpen(false); // Close the dropdown after selecting an option
   };
 
@@ -55,7 +62,11 @@ export const SelectBox: React.FC<CustomSelectProps> = ({
     <div ref={selectRef} style={{ position: 'relative' }}>
       <div
         onClick={toggleDropdown} // Toggle open/close on clicking the select
-        className="flex px-4 py-1 rounded-full bg-[#9D35A3] text-textColor justify-between items-center cursor-pointer"
+        className="flex px-4 py-1 rounded-full text-textColor justify-between items-center cursor-pointer"
+        style={{
+          backgroundColor:
+            options.find((opt) => opt.value === value)?.colour || '#9D35A3',
+        }}
       >
         <div>{value || placeholder || 'Select'}</div>
         <div>
@@ -80,8 +91,11 @@ export const SelectBox: React.FC<CustomSelectProps> = ({
               {options.map((option) => (
                 <li
                   key={option.value}
-                  onClick={(event) => handleOptionClick(option.value, event)}
+                  onClick={(event) => handleOptionClick(option, event)}
                   className="bg-[#AC6F6F] px-4 py-1 rounded-full text-textColor hover:bg-opacity-50 cursor-pointer"
+                  style={{
+                    backgroundColor: option.colour,
+                  }}
                 >
                   {option.label}
                 </li>

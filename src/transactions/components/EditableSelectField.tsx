@@ -3,7 +3,7 @@ import { CellProp, CustomTableMeta } from './type';
 import { SelectBox } from './SelectBox';
 
 interface EditableSelectFieldProp extends CellProp {
-  options: { value: string; label: string }[];
+  options: { value: string; label: string; colour?: string }[];
 }
 
 export const EditableSelectField = ({

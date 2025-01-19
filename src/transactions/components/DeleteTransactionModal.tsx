@@ -13,6 +13,7 @@ export const DeleteTransactionModal = ({
   selectedIds,
   setData,
   setIsDeleteModalOpen,
+  table,
 }: DeleteTransactionModalProp) => {
   const handleDeleteRows = async (selectedIds: string[]) => {
     // Delete selected rows from the backend
@@ -28,6 +29,8 @@ export const DeleteTransactionModal = ({
       setData((prevData) =>
         prevData.filter((row) => !selectedIds.includes(row.id)),
       );
+      table.resetRowSelection();
+
       setIsDeleteModalOpen(false);
     }
   };
