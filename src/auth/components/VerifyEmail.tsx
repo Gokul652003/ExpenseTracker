@@ -1,4 +1,5 @@
 import expenseTrackerLogo from '@/assets/expense-tracker-logo.svg';
+
 export const VerifyEmail = ({ email }: { email: string }) => {
   return (
     <div className="flex flex-col justify-center h-screen gap-7 px-48">
@@ -16,10 +17,8 @@ export const VerifyEmail = ({ email }: { email: string }) => {
         </span>
       </div>
       <div>
-        <button className="bg-primary py-3 px-10 rounded-full">
-          <span className="font-normal text-base text-textColor">
-            Resent Email
-          </span>
+        <button className="bg-primary py-3 px-10 rounded-full font-normal text-base text-textColor">
+          Resent Email
         </button>
       </div>
     </div>
