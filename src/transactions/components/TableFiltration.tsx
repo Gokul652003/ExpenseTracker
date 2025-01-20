@@ -5,6 +5,7 @@ import { DeleteTransactionModal } from './DeleteTransactionModal';
 import { supabase } from '../../supabase/supabaseClient';
 import { useSession } from '../../Routes/useSession';
 import { TransactionTableData } from './type';
+import { toast } from 'sonner';
 
 type SesstionFilter = {
   id: string;
@@ -74,12 +75,20 @@ export const TableFiltrations: React.FC<TableFitrationProps> = ({
       .select();
 
     if (error) {
-      console.error('Error adding transaction:', error.message);
+      toast.error(error.message, {
+        style: {
+          backgroundColor: 'var(--text-color)',
+        },
+      });
       return;
     }
 
     if (data) {
-      console.log('Transaction added successfully:', data);
+     toast.success('New transaction added successfully', {
+       style: {
+         backgroundColor: 'var(--text-color)',
+       },
+     });
 
       // Update the table state dynamically
       setData((prevData) => [

@@ -14,6 +14,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { supabase } from '../supabase/supabaseClient';
+import { toast } from 'sonner';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -38,6 +39,12 @@ const Login = () => {
       const { data: user } = await supabase.auth.getUser();
       if (user) {
         navigate('/dashboard');
+        toast('login successfully', {
+          style: {
+            backgroundColor: 'var(--text-color)',
+          },
+        });
+
       }
     } catch (error) {
       const typedError = error as AuthError;
