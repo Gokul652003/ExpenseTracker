@@ -37,7 +37,7 @@ export const EditableDate = ({ getValue, row, column, table }: CellProp) => {
           type="date"
           className="bg-transparent"
           value={value}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e) => setValue(new Date(e.target.value).toISOString())}
           onBlur={handleBlur}
           autoFocus
         />

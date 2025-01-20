@@ -1,7 +1,9 @@
+import { useState, useEffect } from 'react';
 import { Table } from '@tanstack/table-core';
 import deleteImage from '@/assets/deleteTransactionImg.svg';
 import { supabase } from '../../supabase/supabaseClient';
 import { TransactionTableData } from './type';
+import { toast } from 'sonner';
 
 interface DeleteTransactionModalProp {
   selectedIds: string[];
@@ -9,12 +11,20 @@ interface DeleteTransactionModalProp {
   table: Table<TransactionTableData>;
   setIsDeleteModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
 export const DeleteTransactionModal = ({
   selectedIds,
   setData,
   setIsDeleteModalOpen,
   table,
 }: DeleteTransactionModalProp) => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    // Trigger the fade-in animation when modal opens
+    setIsVisible(true);
+  }, []);
+
   const handleDeleteRows = async (selectedIds: string[]) => {
     // Delete selected rows from the backend
     const { error } = await supabase
@@ -23,7 +33,7 @@ export const DeleteTransactionModal = ({
       .in('id', selectedIds);
 
     if (error) {
-      console.error('Error deleting rows:', error.message);
+      toast.error(error.message);
     } else {
       // Update the table data after successful deletion
       setData((prevData) =>
@@ -32,12 +42,34 @@ export const DeleteTransactionModal = ({
       table.resetRowSelection();
 
       setIsDeleteModalOpen(false);
+      toast.success('Transactions deleted', {
+        style: {
+          backgroundColor: 'var(--text-color)',
+        },
+      });
     }
   };
 
+  const handleClose = () => {
+    setIsVisible(false);
+    setTimeout(() => {
+      setIsDeleteModalOpen(false);
+    }, 300);
+  };
+
   return (
-    <div className="absolute top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex justify-center items-center z-50 ">
-      <div className="bg-bg px-6 py-10 rounded-2xl shadow-lg flex flex-col gap-3.5 w-[444px] ">
+    <div
+      className={`absolute top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex justify-center items-center z-50 transition-all duration-500 ease-in-out ${
+        isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none blur-sm'
+      }`}
+    >
+      <div
+        className={`bg-bg px-6 py-10 rounded-2xl shadow-lg flex flex-col gap-3.5 w-[444px] transition-all duration-500 ease-in-out transform ${
+          isVisible
+            ? 'scale-100 opacity-100 translate-y-0'
+            : 'scale-95 opacity-0 translate-y-4'
+        }`}
+      >
         <div className="flex justify-center">
           <img src={deleteImage} alt="Delete Icon" />
         </div>
@@ -51,7 +83,7 @@ export const DeleteTransactionModal = ({
         <div className="flex gap-4">
           <button
             className="px-10 py-3 bg-border rounded-full text-textColor flex-1"
-            onClick={() => setIsDeleteModalOpen(false)}
+            onClick={handleClose}
           >
             Cancel
           </button>

@@ -15,7 +15,7 @@ import { AuthRoute } from './Routes/AuthRoute';
 import { ProtectedLayout } from './Routes/ProtectedLayout';
 import Profile from './profile/Profile';
 import Catagory from './catagory/Catagory';
-
+import { Toaster } from 'sonner';
 function App() {
   const { loading } = useSession();
 
@@ -25,6 +25,7 @@ function App() {
 
   return (
     <Router>
+      <Toaster richColors />
       <Routes>
         {/* Auth Routes */}
         <Route

@@ -4,6 +4,7 @@ import { UserCategoryProp } from '../transactions/components/type';
 import { supabase } from '../supabase/supabaseClient';
 import { useSession } from '../Routes/useSession';
 import { LabelComponent } from './LabelComponent';
+import { toast } from 'sonner';
 
 const Category = () => {
   const { userCategory, loading } = useFetchUserData();
@@ -25,7 +26,7 @@ const Category = () => {
         .eq('id', id);
 
       if (error) {
-        console.error('Error updating category:', error.message);
+        toast.error(error.message);
         return;
       }
 
@@ -35,8 +36,11 @@ const Category = () => {
           cat.id === id ? { ...cat, ...updatedCategory } : cat,
         ),
       );
-
-      console.log('Category updated successfully');
+      toast.success('Category updated successfully', {
+        style: {
+          backgroundColor: 'var(--text-color)',
+        },
+      });
     } catch (error) {
       console.error('Unexpected error:', error);
     }
@@ -53,12 +57,15 @@ const Category = () => {
       return;
     }
 
-    console.log('Category deleted successfully.');
-
     // Update the categories state dynamically
     setCategories((prevData) =>
       prevData.filter((category) => category.id !== categoryId),
     );
+    toast.success('Category deleted successfully.', {
+      style: {
+        backgroundColor: 'var(--text-color)',
+      },
+    });
   };
 
   const handleDelete = (id: string) => {
@@ -78,13 +85,20 @@ const Category = () => {
       })
       .select();
     if (error) {
-      console.error('Error adding transaction:', error.message);
+      toast.error(error.message, {
+        style: {
+          backgroundColor: 'var(--text-color)',
+        },
+      });
       return;
     }
 
     if (data) {
-      console.log('Transaction added successfully:', data);
-
+      toast.success('New category added successfully', {
+        style: {
+          backgroundColor: 'var(--text-color)',
+        },
+      });
       setCategories((prevData) => [
         ...prevData,
 

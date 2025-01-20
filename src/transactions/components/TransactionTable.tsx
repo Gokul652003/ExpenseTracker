@@ -14,6 +14,7 @@ import { TableFiltrations } from './TableFiltration';
 import { useFetchUserData } from '../../supabase/supabaseApis';
 import { supabase } from '../../supabase/supabaseClient';
 import { TransactionTableData } from './type';
+import { toast } from 'sonner';
 
 const transactionType: { value: string; label: string }[] = [
   { value: 'Income', label: 'Income' },
@@ -64,6 +65,7 @@ export const TransactionTable = () => {
       setData(userData);
     }
   }, [userData]);
+  console.log(data);
 
   const table = useReactTable({
     data: data,
@@ -94,6 +96,12 @@ export const TransactionTable = () => {
 
         if (error) {
           console.error('Error updating row:', error.message);
+        } else {
+          toast.success('Transactions updated successfully', {
+            style: {
+              backgroundColor: 'var(--text-color)',
+            },
+          });
         }
       },
     },
