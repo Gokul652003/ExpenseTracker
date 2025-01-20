@@ -41,9 +41,7 @@ const fetchUserProfile = async (
 ): Promise<TransactionTableData[] | null> => {
   const { data, error } = await supabase
     .from('transaction')
-    .select(
-      'id,date,type,amount,notes,category',
-    )
+    .select('id,date,type,amount,notes,category')
     .eq('user_id', userId)
     .order('date', { ascending: false });
 
@@ -173,7 +171,7 @@ export const useFetchUserData = () => {
     () => getTopCategories(userData, userCategory),
     [userData, userCategory],
   );
-  console.log(sortedCategories)
+  console.log(sortedCategories);
   return {
     userData,
     totalIncome,

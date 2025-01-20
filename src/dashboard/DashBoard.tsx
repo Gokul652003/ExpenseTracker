@@ -17,7 +17,7 @@ export const DashBoard = () => {
     '24 Hours',
   ];
   const dateFilters = ['From Date', 'To Date'];
-// console.log(sortedCategories);
+  // console.log(sortedCategories);
   return (
     <div>
       <div className="p-8 flex flex-col gap-2 border border-border">
@@ -68,7 +68,7 @@ export const DashBoard = () => {
             </div>
             <div>
               {/* <TransactionChart /> */}
-              <TransactionChart/>
+              <TransactionChart />
             </div>
           </div>
         </div>

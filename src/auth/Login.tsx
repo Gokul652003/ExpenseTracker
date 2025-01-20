@@ -44,7 +44,6 @@ const Login = () => {
             backgroundColor: 'var(--text-color)',
           },
         });
-
       }
     } catch (error) {
       const typedError = error as AuthError;

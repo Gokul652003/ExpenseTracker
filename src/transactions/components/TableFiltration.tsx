@@ -84,11 +84,11 @@ export const TableFiltrations: React.FC<TableFitrationProps> = ({
     }
 
     if (data) {
-     toast.success('New transaction added successfully', {
-       style: {
-         backgroundColor: 'var(--text-color)',
-       },
-     });
+      toast.success('New transaction added successfully', {
+        style: {
+          backgroundColor: 'var(--text-color)',
+        },
+      });
 
       // Update the table state dynamically
       setData((prevData) => [

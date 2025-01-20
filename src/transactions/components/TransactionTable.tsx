@@ -67,7 +67,6 @@ export const TransactionTable = () => {
   }, [userData]);
   console.log(data);
 
-
   const table = useReactTable({
     data: data,
     columns,
@@ -97,13 +96,12 @@ export const TransactionTable = () => {
 
         if (error) {
           console.error('Error updating row:', error.message);
-        }
-        else{
-          toast.success('Transactions updated successfully',{
+        } else {
+          toast.success('Transactions updated successfully', {
             style: {
               backgroundColor: 'var(--text-color)',
             },
-          })
+          });
         }
       },
     },
