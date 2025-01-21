@@ -13,6 +13,7 @@ import { useForm } from 'react-hook-form';
 import { SignUpInput, useSignUpSchema } from './api/signUp';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
+import { VerifyEmail } from './components/VerifyEmail';
 
 const SignIn = () => {
   const [errorCode, setSignUpError] = useState<string>('');
@@ -43,7 +44,11 @@ const SignIn = () => {
   });
 
   if (userEmail) {
-    return <h1>{userEmail}</h1>;
+    return (
+      <AuthLayout>
+        <VerifyEmail email={userEmail} />
+      </AuthLayout>
+    );
   }
   return (
     <AuthLayout>
