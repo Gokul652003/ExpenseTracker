@@ -17,7 +17,6 @@ import Profile from './profile/Profile';
 import { Toaster } from 'sonner';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Category } from './catagory/Catagory';
-import Chat from './chant';
 
 const queryClient = new QueryClient();
 
@@ -58,7 +57,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <ProtectedLayout>
-                  <Chat />
+                  <DashBoard />
                 </ProtectedLayout>
               </ProtectedRoute>
             }
