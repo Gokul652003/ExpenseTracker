@@ -1,4 +1,5 @@
 import { TransactionChart } from '../chart/TransactionChart';
+import { Skeleton } from '../react-components/skeleton/Skeleton';
 import { useFetchUserData } from '../supabase/supabaseApis';
 import { Button } from './components/Button';
 import { Card } from './components/Card';
@@ -30,11 +31,19 @@ export const DashBoard = () => {
         </span>
       </div>
       <div className="p-8 flex flex-col gap-[52px]">
-        <div className="flex gap-6">
-          <Card type="Balance" amount={totalBalance} isLoading={loading} />
-          <Card type="Income" amount={totalIncome} isLoading={loading} />
-          <Card type="Expense" amount={totalExpense} isLoading={loading} />
-        </div>
+        {loading ? (
+          <div className="flex gap-6">
+            <Skeleton className="h-[294px] flex-1" />
+            <Skeleton className="h-[294px] flex-1" />
+            <Skeleton className="h-[294px] flex-1" />
+          </div>
+        ) : (
+          <div className="flex gap-6">
+            <Card type="Balance" amount={totalBalance} isLoading={loading} />
+            <Card type="Income" amount={totalIncome} isLoading={loading} />
+            <Card type="Expense" amount={totalExpense} isLoading={loading} />
+          </div>
+        )}
         <div className="flex flex-col gap-9">
           <div className="p-8 flex flex-col gap-2">
             <span className="text-textColor text-4xl font-medium">

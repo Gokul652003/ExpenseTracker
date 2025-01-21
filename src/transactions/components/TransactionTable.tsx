@@ -13,6 +13,7 @@ import { EditableDate } from './EditableDate';
 import { TableFiltrations } from './TableFiltration';
 import { useFetchUserData } from '../../supabase/supabaseApis';
 import { TransactionTableData } from './type';
+import { Skeleton } from '../../react-components/skeleton/Skeleton';
 
 const transactionType: { value: string; label: string }[] = [
   { value: 'Income', label: 'Income' },
@@ -85,7 +86,16 @@ export const TransactionTable = () => {
   });
 
   if (loading) {
-    return <div className="text-text text-4xl">Loading...</div>;
+    return (
+      <div className='flex flex-col gap-8'>
+        <Skeleton className="h-20" />
+        <div className='flex flex-col gap-4'>
+          {Array.from({ length: 3 }, (_, index) => (
+            <Skeleton key={index} className="h-[35px] grow" />
+          ))}
+        </div>
+      </div>
+    );
   }
 
   return (
