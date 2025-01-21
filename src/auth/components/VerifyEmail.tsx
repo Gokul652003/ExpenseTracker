@@ -2,7 +2,7 @@ import expenseTrackerLogo from '@/assets/expense-tracker-logo.svg';
 
 export const VerifyEmail = ({ email }: { email: string }) => {
   return (
-    <div className="flex flex-col justify-center h-screen gap-7 px-48">
+    <div className="flex flex-col justify-center h-screen gap-7 px-48 bg-bg">
       <div>
         <img src={expenseTrackerLogo} />
       </div>
