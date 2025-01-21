@@ -46,9 +46,9 @@ const SignIn = () => {
   if (userEmail) {
     return (
       <AuthLayout>
-        <VerifyEmail email={userEmail}/>
+        <VerifyEmail email={userEmail} />
       </AuthLayout>
-    )
+    );
   }
   return (
     <AuthLayout>
