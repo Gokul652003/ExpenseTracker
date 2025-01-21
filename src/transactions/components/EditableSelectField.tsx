@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { CellProp, CustomTableMeta } from './type';
 import { SelectBox } from './SelectBox';
 
@@ -14,11 +13,6 @@ export const EditableSelectField = ({
   options,
 }: EditableSelectFieldProp) => {
   const initailValues = getValue();
-  const [value, setValues] = useState(initailValues);
-
-  useEffect(() => {
-    setValues(initailValues);
-  }, [initailValues]);
 
   const handleOnChange = (value: string) => {
     const newValue = value;
@@ -27,10 +21,13 @@ export const EditableSelectField = ({
       column.id,
       newValue,
     );
-    setValues(newValue);
   };
 
   return (
-    <SelectBox onChange={handleOnChange} value={value} options={options} />
+    <SelectBox
+      onChange={handleOnChange}
+      value={initailValues}
+      options={options}
+    />
   );
 };

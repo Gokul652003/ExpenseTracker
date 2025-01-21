@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useFetchUserData } from '../supabase/supabaseApis';
 import { UserCategoryProp } from '../transactions/components/type';
-import { supabase } from '../supabase/supabaseClient';
-import { useSession } from '../Routes/useSession';
 import { LabelComponent } from './LabelComponent';
+import { supabase } from '../supabase/supabaseClient';
 import { toast } from 'sonner';
 
-const Category = () => {
-  const { userCategory, loading } = useFetchUserData();
-  const { session } = useSession();
+export const Category = () => {
+  const { userCategory, loading, deleteCategory, addCategory, updateCategory } =
+    useFetchUserData();
   const [categories, setCategories] = useState<UserCategoryProp[]>([]);
   useEffect(() => {
     if (userCategory) setCategories(userCategory);
@@ -18,100 +17,47 @@ const Category = () => {
     id: string,
     updatedCategory: Partial<UserCategoryProp>,
   ) => {
-    console.log(updatedCategory);
-    try {
-      const { error } = await supabase
-        .from('usercategory')
-        .update(updatedCategory)
-        .eq('id', id);
+    const categoryToUpdate = categories.find((cat) => cat.id === id);
+    if (!categoryToUpdate) return;
 
-      if (error) {
-        toast.error(error.message);
-        return;
-      }
+    const oldCategory = categoryToUpdate.category;
 
-      // Update the state locally
-      setCategories((prev) =>
-        prev.map((cat) =>
-          cat.id === id ? { ...cat, ...updatedCategory } : cat,
-        ),
-      );
-      toast.success('Category updated successfully', {
-        style: {
-          backgroundColor: 'var(--text-color)',
-        },
-      });
-    } catch (error) {
-      console.error('Unexpected error:', error);
-    }
-  };
-
-  const deleteCategory = async (categoryId: string) => {
-    const { error } = await supabase
-      .from('usercategory')
-      .delete()
-      .eq('id', categoryId);
-
-    if (error) {
-      console.error('Error deleting category:', error.message);
-      return;
-    }
-
-    // Update the categories state dynamically
-    setCategories((prevData) =>
-      prevData.filter((category) => category.id !== categoryId),
-    );
-    toast.success('Category deleted successfully.', {
-      style: {
-        backgroundColor: 'var(--text-color)',
-      },
+    await updateCategory({
+      id,
+      updatedCategory,
+      oldCategory,
     });
   };
 
-  const handleDelete = (id: string) => {
-    deleteCategory(id);
-  };
+  const handleDelete = async (id: string) => {
+    const categoryToDelete = categories.find((cat) => cat.id === id);
+    if (!categoryToDelete) return;
 
-  const addCategory = async (category: {
-    category: string;
-    colour: string;
-  }) => {
-    const { data, error } = await supabase
-      .from('usercategory')
-      .insert({
-        category: category.category,
-        colour: category.colour,
-        user_id: session?.user?.id,
-      })
-      .select();
-    if (error) {
-      toast.error(error.message, {
-        style: {
-          backgroundColor: 'var(--text-color)',
-        },
-      });
+    const { data: transactions, error: fetchError } = await supabase
+      .from('transaction')
+      .select('id')
+      .eq('category', categoryToDelete.category); // Check if there are transactions with this category
+
+    if (fetchError) {
+      console.error('Error checking transactions:', fetchError.message);
+      toast.error('Failed to check transactions');
       return;
     }
 
-    if (data) {
-      toast.success('New category added successfully', {
-        style: {
-          backgroundColor: 'var(--text-color)',
-        },
-      });
-      setCategories((prevData) => [
-        ...prevData,
-
-        {
-          id: data[0].id,
-          ...category,
-        },
-      ]);
+    if (transactions && transactions.length > 0) {
+      // If transactions exist with this category, show an error
+      toast.error('Cannot delete category. It is referenced in transactions.');
+      return;
     }
+    deleteCategory(id);
   };
 
   const handleAddCategory = () => {
-    addCategory({ category: 'New Category', colour: '#ffffff' });
+    const newCategory = {
+      category: 'Health',
+      colour: '#00FF00',
+    };
+    addCategory(newCategory);
   };
 
   if (loading) return <div>Loading...</div>;
@@ -147,5 +93,3 @@ const Category = () => {
     </div>
   );
 };
-
-export default Category;

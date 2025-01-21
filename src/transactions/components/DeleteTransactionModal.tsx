@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Table } from '@tanstack/table-core';
 import deleteImage from '@/assets/deleteTransactionImg.svg';
-import { supabase } from '../../supabase/supabaseClient';
 import { TransactionTableData } from './type';
-import { toast } from 'sonner';
+import { useFetchUserData } from '../../supabase/supabaseApis';
 
 interface DeleteTransactionModalProp {
   selectedIds: string[];
@@ -14,40 +13,23 @@ interface DeleteTransactionModalProp {
 
 export const DeleteTransactionModal = ({
   selectedIds,
-  setData,
+  // setData,
   setIsDeleteModalOpen,
   table,
 }: DeleteTransactionModalProp) => {
   const [isVisible, setIsVisible] = useState(false);
+  const { deleteTransaction } = useFetchUserData();
 
   useEffect(() => {
     // Trigger the fade-in animation when modal opens
     setIsVisible(true);
   }, []);
 
-  const handleDeleteRows = async (selectedIds: string[]) => {
-    // Delete selected rows from the backend
-    const { error } = await supabase
-      .from('transaction')
-      .delete()
-      .in('id', selectedIds);
+  const handleDeleteRows = (selectedIds: string[]) => {
+    deleteTransaction(selectedIds);
+    table.resetRowSelection();
 
-    if (error) {
-      toast.error(error.message);
-    } else {
-      // Update the table data after successful deletion
-      setData((prevData) =>
-        prevData.filter((row) => !selectedIds.includes(row.id)),
-      );
-      table.resetRowSelection();
-
-      setIsDeleteModalOpen(false);
-      toast.success('Transactions deleted', {
-        style: {
-          backgroundColor: 'var(--text-color)',
-        },
-      });
-    }
+    setIsDeleteModalOpen(false);
   };
 
   const handleClose = () => {

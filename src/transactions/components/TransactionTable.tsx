@@ -12,9 +12,7 @@ import { EditableNote } from './EditableNote';
 import { EditableDate } from './EditableDate';
 import { TableFiltrations } from './TableFiltration';
 import { useFetchUserData } from '../../supabase/supabaseApis';
-import { supabase } from '../../supabase/supabaseClient';
 import { TransactionTableData } from './type';
-import { toast } from 'sonner';
 
 const transactionType: { value: string; label: string }[] = [
   { value: 'Income', label: 'Income' },
@@ -57,7 +55,7 @@ export const TransactionTable = () => {
   const [data, setData] = useState<TransactionTableData[]>([]); // Initially empty
   const [sessionFilter, setSessionFiltes] = useState<ColumnFilter[]>([]);
   const [tableFilter, setTableFilter] = useState<string>('');
-  const { userData, loading } = useFetchUserData();
+  const { userData, loading, updateTransaction } = useFetchUserData();
 
   useEffect(() => {
     console.log(userData, 'running');
@@ -80,29 +78,8 @@ export const TransactionTable = () => {
         columnId: keyof TransactionTableData,
         value: string,
       ) => {
-        setData((prevData) =>
-          prevData.map((row, index) =>
-            index === rowIndex
-              ? { ...prevData[rowIndex], [columnId]: value }
-              : row,
-          ),
-        );
-
         const updatedRow = data[rowIndex];
-        const { error } = await supabase
-          .from('transaction')
-          .update({ [columnId]: value })
-          .eq('id', updatedRow.id);
-
-        if (error) {
-          console.error('Error updating row:', error.message);
-        } else {
-          toast.success('Transactions updated successfully', {
-            style: {
-              backgroundColor: 'var(--text-color)',
-            },
-          });
-        }
+        updateTransaction({ columnId, id: updatedRow.id, value });
       },
     },
   });
