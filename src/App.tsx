@@ -14,8 +14,12 @@ import { ProtectedRoute } from './Routes/ProtectedRoute';
 import { AuthRoute } from './Routes/AuthRoute';
 import { ProtectedLayout } from './Routes/ProtectedLayout';
 import Profile from './profile/Profile';
-import Catagory from './catagory/Catagory';
 import { Toaster } from 'sonner';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Category } from './catagory/Catagory';
+
+const queryClient = new QueryClient();
+
 function App() {
   const { loading } = useSession();
 
@@ -25,71 +29,73 @@ function App() {
 
   return (
     <Router>
-      <Toaster richColors />
-      <Routes>
-        {/* Auth Routes */}
-        <Route
-          path="/login"
-          element={
-            <AuthRoute>
-              <Login />
-            </AuthRoute>
-          }
-        />
-        <Route path="/" element={<Navigate to="/dashboard" />} />
-        <Route
-          path="/signin"
-          element={
-            <AuthRoute>
-              <SignIn />
-            </AuthRoute>
-          }
-        />
+      <QueryClientProvider client={queryClient}>
+        <Toaster richColors />
+        <Routes>
+          {/* Auth Routes */}
+          <Route
+            path="/login"
+            element={
+              <AuthRoute>
+                <Login />
+              </AuthRoute>
+            }
+          />
+          <Route path="/" element={<Navigate to="/dashboard" />} />
+          <Route
+            path="/signin"
+            element={
+              <AuthRoute>
+                <SignIn />
+              </AuthRoute>
+            }
+          />
 
-        {/* Protected Routes */}
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <ProtectedLayout>
-                <DashBoard />
-              </ProtectedLayout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/transactions"
-          element={
-            <ProtectedRoute>
-              <ProtectedLayout>
-                <Transactions />
-              </ProtectedLayout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <ProtectedLayout>
-                <Profile />
-              </ProtectedLayout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/catagory"
-          element={
-            <ProtectedRoute>
-              <ProtectedLayout>
-                <Catagory />
-              </ProtectedLayout>
-            </ProtectedRoute>
-          }
-        />
+          {/* Protected Routes */}
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <ProtectedLayout>
+                  <DashBoard />
+                </ProtectedLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/transactions"
+            element={
+              <ProtectedRoute>
+                <ProtectedLayout>
+                  <Transactions />
+                </ProtectedLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <ProtectedLayout>
+                  <Profile />
+                </ProtectedLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/catagory"
+            element={
+              <ProtectedRoute>
+                <ProtectedLayout>
+                  <Category />
+                </ProtectedLayout>
+              </ProtectedRoute>
+            }
+          />
 
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </QueryClientProvider>
     </Router>
   );
 }
