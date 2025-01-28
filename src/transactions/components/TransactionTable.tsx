@@ -18,6 +18,7 @@ import { Skeleton } from '../../react-components/skeleton/Skeleton';
 const transactionType: { value: string; label: string }[] = [
   { value: 'Income', label: 'Income' },
   { value: 'Expense', label: 'Expense' },
+  { value: 'Savings', label: 'Savings'}
 ];
 
 type ColumnFilter = { id: string; value: string };
