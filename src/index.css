@@ -9,9 +9,6 @@
   --primary-color: rgba(35, 131, 226, 1);
   --secondary-color: rgba(169, 169, 169, 1);
   --text-color: rgba(255, 255, 255, 1);
-  --random-color-1: rgba(157, 53, 163, 1);
-  --random-color-2: rgba(172, 111, 111, 1);
-  --random-color-3: rgba(172, 222, 73, 1);
   --table-bg-dark: rgba(47, 47, 47, 1);
   --border-color: rgba(55, 55, 55, 1);
   --bg-color: rgba(25, 25, 25, 1);
@@ -31,4 +28,89 @@ input[type='number']::-webkit-outer-spin-button,
 input[type='number']::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.checkbox {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.checkbox:checked::after {
+  content: '';
+  width: 6px;
+  height: 11px;
+  border: solid var(--table-bg-dark);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.checkbox:checked {
+  background-color: var(--text-color);
+}
+/* Custom CSS for react-datepicker */
+/* Hide the triangle pointer */
+.react-datepicker__triangle {
+  display: none;
+}
+
+/* Set the background color of the calendar */
+.react-datepicker {
+  background-color: var(--table-bg-dark) !important;
+  border-radius: 8px;
+}
+
+/* Change the header background */
+.react-datepicker__header {
+  background-color: var(--table-bg-dark) !important;
+}
+
+/* Change the day text color */
+.react-datepicker__day {
+  color: var(--text-color) !important;
+  border: none !important; /* Remove border */
+  border-radius: 50%; /* Make all days rounded */
+}
+
+/* Highlight on hover */
+.react-datepicker__day:hover {
+  background-color: #555 !important;
+}
+
+/* Set color for current month */
+.react-datepicker__current-month {
+  color: var(--text-color) !important;
+  font-weight: 600 !important;
+}
+
+/* Style the weekday (Mon, Tue, etc.) */
+.react-datepicker__day-name {
+  color: var(--text-color) !important;
+  font-weight: 600 !important; /* Optional: bold the weekday labels */
+}
+
+/* Make selected day fully round */
+.react-datepicker__day--selected {
+  background-color: var(--primary-color) !important; /* Selected day background color */
+  color: white !important; /* Selected day text color */
+  border-radius: 50% !important; /* Full round border */
+}
+
+/* Optional: Change the border on selected day */
+.react-datepicker__day--selected:hover {
+  background-color: #45a049 !important;
+}
+
+/* Remove border and add padding to the month view */
+.react-datepicker__month {
+  padding: 10px;
+  border: none !important;
 }

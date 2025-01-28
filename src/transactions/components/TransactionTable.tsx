@@ -23,7 +23,7 @@ const transactionType: { value: string; label: string }[] = [
 type ColumnFilter = { id: string; value: string };
 
 export const TransactionTable = () => {
-  const { userCategory } = useFetchUserData();
+  const { userData, loading, updateTransaction,userCategory } = useFetchUserData();
 
   const formattedOptions = userCategory?.map(
     (category: { id: string; category: string; colour: string }) => ({
@@ -56,15 +56,20 @@ export const TransactionTable = () => {
   const [data, setData] = useState<TransactionTableData[]>([]); // Initially empty
   const [sessionFilter, setSessionFiltes] = useState<ColumnFilter[]>([]);
   const [tableFilter, setTableFilter] = useState<string>('');
-  const { userData, loading, updateTransaction } = useFetchUserData();
 
   useEffect(() => {
-    console.log(userData, 'running');
     if (userData) {
-      setData(userData);
+      const formattedData = userData.map((item) => ({
+        ...item,
+      date: new Date(item.date).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        }),
+      }));
+      setData(formattedData);
     }
   }, [userData]);
-  console.log(data);
 
   const table = useReactTable({
     data: data,
@@ -84,7 +89,6 @@ export const TransactionTable = () => {
       },
     },
   });
-
   if (loading) {
     return (
       <div className='flex flex-col gap-8'>
@@ -119,7 +123,7 @@ export const TransactionTable = () => {
                     table.toggleAllRowsSelected(e.target.checked)
                   }
                   checked={table.getIsAllRowsSelected()}
-                  className="form-checkbox"
+                  className="checkbox"
                 />
               </th>
               {headerGroup.headers.map((header) => (
@@ -152,7 +156,7 @@ export const TransactionTable = () => {
                     type="checkbox"
                     checked={row.getIsSelected()}
                     onChange={(e) => row.toggleSelected(e.target.checked)}
-                    className="form-checkbox"
+                    className="checkbox"
                   />
                 </td>
                 {row.getVisibleCells().map((cell) => (
@@ -171,3 +175,6 @@ export const TransactionTable = () => {
     </div>
   );
 };
+
+
+

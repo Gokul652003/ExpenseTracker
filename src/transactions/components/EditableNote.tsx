@@ -20,7 +20,8 @@ export const EditableNote = ({ getValue, row, column, table }: CellProp) => {
   return (
     <input
       type="text"
-      className="bg-transparent text-wrap w-full"
+      placeholder='Add notes'
+      className="bg-transparent text-wrap w-full placeholder-secondary outline-none"
       value={value}
       onChange={(e) => setValues(e.target.value)}
       onBlur={onBlur}

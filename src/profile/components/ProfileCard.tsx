@@ -2,11 +2,12 @@ import userAvathar from '@/react-components/User/assets/userAvatar.jpeg';
 import { TextField } from '../../react-components/TextField/TextField';
 import { useEffect, useState } from 'react';
 import { useSession } from '../../Routes/useSession';
-import { signOut } from '../../supabase/supabaseApis';
-import { redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ProfileUploaderModal } from './p';
+import { supabase } from '../../supabase/supabaseClient';
 const ProfileCard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate=useNavigate()
 
   const [profileDetails, setProfileDetails] = useState({
     firstname: 'John',
@@ -27,10 +28,16 @@ const ProfileCard = () => {
     }
   }, [profile]);
 
-  const logOut = () => {
-    void signOut();
-    redirect('/');
-  };
+const handleLogout = async () => {
+  const { error } = await supabase.auth.signOut();
+  if (error) {
+    console.error('Error logging out:', error.message);
+  } else {
+    console.log('User logged out successfully');
+    // Redirect to the login page after successful logout
+    navigate('/login'); // Use the path to your login page
+  }
+};
 
   return (
     <div className="p-8 flex flex-col gap-8 w-[800px]">
@@ -103,7 +110,7 @@ const ProfileCard = () => {
       <div>
         <button
           className="px-10 py-3 bg-border rounded-full text-textColor flex-1"
-          onClick={logOut}
+          onClick={handleLogout}
         >
           Log out
         </button>

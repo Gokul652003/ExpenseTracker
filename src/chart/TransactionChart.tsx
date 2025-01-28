@@ -1,4 +1,3 @@
-import React from 'react';
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -23,16 +22,52 @@ ChartJS.register(
   Legend,
 );
 
-export const TransactionChart: React.FC = () => {
+interface TransactionChartProp {
+  chartFilter:
+    | 'All Time'
+    | '12 Months'
+    | '30 Days'
+    | '7 Days'
+    | '24 Hours'
+    | 'custom';
+}
+
+export const TransactionChart = ({ chartFilter }: TransactionChartProp) => {
   const { userData } = useFetchUserData();
 
-  // Ensure userData exists and is not empty
   if (!userData || userData.length === 0) {
-    return <div>No transaction data available</div>;
+    return (
+      <div className="text-textColor text-center">
+        No transaction data available
+      </div>
+    );
   }
 
+  const filteredData = userData.filter((item) => {
+    const transactionDate = new Date(item.date).getTime();
+    const now = Date.now();
+
+    if (chartFilter === '12 Months') {
+      const oneYearAgo = now - 12 * 30 * 24 * 60 * 60 * 1000; // 12 months in milliseconds
+      return transactionDate >= oneYearAgo;
+    } else if (chartFilter === '30 Days') {
+      const thirtyDaysAgo = now - 30 * 24 * 60 * 60 * 1000; // 30 days in milliseconds
+      return transactionDate >= thirtyDaysAgo;
+    } else if (chartFilter === '7 Days') {
+      const sevenDaysAgo = now - 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
+      return transactionDate >= sevenDaysAgo;
+    } else if (chartFilter === '24 Hours') {
+      const oneDayAgo = now - 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+      return transactionDate >= oneDayAgo;
+    }
+
+    // Default to 'all'
+    return true;
+  });
+  // Ensure userData exists and is not empty
+
   // Reverse the user data so the most recent transaction comes first
-  const reversedData = [...userData].reverse();
+  const reversedData = [...filteredData].reverse();
 
   // Get transaction dates (formatted as YYYY-MM-DD)
   const dates = reversedData?.map(
@@ -120,12 +155,13 @@ export const TransactionChart: React.FC = () => {
         },
         beginAtZero: false,
         ticks: {
-          stepSize: 5,
+          stepSize: 100,
           font: {
             family: primaryFont,
             size: 16,
           },
           color: 'white',
+          maxTicksLimit: 6,
         },
         grid: {
           color: borderColor,

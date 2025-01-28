@@ -55,7 +55,7 @@ export const Category = () => {
 
   const handleAddCategory = () => {
     const newCategory = {
-      category: 'Health',
+      category: '',
       colour: '#00FF00',
     };
     addCategory(newCategory);

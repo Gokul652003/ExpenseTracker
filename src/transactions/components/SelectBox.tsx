@@ -23,8 +23,7 @@ export const SelectBox: React.FC<CustomSelectProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const selectRef = useRef<HTMLDivElement>(null);
 
-  const selectBoxBg = options.filter((item) => item.value == value);
-  console.log(selectBoxBg[0]);
+ ;
 
   const handleOptionClick = (
     selectedValue: Option,
