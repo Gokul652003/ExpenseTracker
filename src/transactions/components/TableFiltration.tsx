@@ -47,7 +47,7 @@ export const TableFiltrations: React.FC<TableFitrationProps> = ({
       return [...prevFilters, { id, value }];
     });
   };
-const [isModal,setIsmodal] = useState(false)
+  const [isModal, setIsmodal] = useState(false);
   // const getFormattedDate = () => {
   //   const today = new Date();
   //   const year = today.getFullYear();
@@ -194,12 +194,15 @@ const [isModal,setIsmodal] = useState(false)
         {userData && userData?.length === 0 && (
           <button
             className="px-6  bg-green-500 text-textColor rounded"
-            onClick={()=>setIsmodal(true)}
+            onClick={() => setIsmodal(true)}
           >
             Upload CSV
           </button>
         )}
-        <CsvUploaderComponent isModalOpen={isModal} setIsModalOpen={setIsmodal}/>
+        <CsvUploaderComponent
+          isModalOpen={isModal}
+          setIsModalOpen={setIsmodal}
+        />
       </div>
       {isDeleteModalOpen && (
         <DeleteTransactionModal

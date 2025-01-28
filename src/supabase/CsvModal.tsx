@@ -11,8 +11,7 @@ const CsvUploaderComponent = ({
   isModalOpen,
   setIsModalOpen,
 }: CsvUploaderProps) => {
-  const { uploading, message, uploadCsv, downloadTemplate } =
-    useCsvUploader('transaction');
+  const { uploading, message, uploadCsv, downloadTemplate } = useCsvUploader();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

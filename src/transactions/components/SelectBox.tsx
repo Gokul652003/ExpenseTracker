@@ -23,8 +23,6 @@ export const SelectBox: React.FC<CustomSelectProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const selectRef = useRef<HTMLDivElement>(null);
 
- ;
-
   const handleOptionClick = (
     selectedValue: Option,
     event: React.MouseEvent,

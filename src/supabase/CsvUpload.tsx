@@ -8,7 +8,7 @@ const EXPECTED_HEADERS = ['category', 'amount', 'type', 'notes', 'date'];
 export const useCsvUploader = () => {
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState('');
-  const { uploadCsv:CsvFileUpload} = useFetchUserData();
+  const { uploadCsv: CsvFileUpload } = useFetchUserData();
 
   const parseCsv = (file: File): Promise<TransactionTableData[]> => {
     return new Promise((resolve, reject) => {
@@ -41,9 +41,7 @@ export const useCsvUploader = () => {
         return;
       }
 
-        CsvFileUpload(csvData)
-
-      
+      CsvFileUpload(csvData);
     } catch (err) {
       console.error('Error parsing or uploading CSV:', err);
       setMessage('Error parsing the file.');

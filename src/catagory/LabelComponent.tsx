@@ -69,7 +69,7 @@ export const LabelComponent: React.FC<{
               className={`cursor-pointer w-full  ${editedCategory === '' ? 'text-secondary' : 'text-textColor'}`}
               onClick={() => setIsEditing(true)}
             >
-              {editedCategory===""?"Category name":editedCategory}
+              {editedCategory === '' ? 'Category name' : editedCategory}
             </label>
           )}
         </div>

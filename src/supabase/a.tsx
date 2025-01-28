@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Papa from 'papaparse';
 import { supabase } from './supabaseClient';
 
-
 const CSVUpload = () => {
   const [file, setFile] = useState<File | null>(null);
 

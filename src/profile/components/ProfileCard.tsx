@@ -7,7 +7,7 @@ import { ProfileUploaderModal } from './p';
 import { supabase } from '../../supabase/supabaseClient';
 const ProfileCard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const navigate=useNavigate()
+  const navigate = useNavigate();
 
   const [profileDetails, setProfileDetails] = useState({
     firstname: 'John',
@@ -28,16 +28,16 @@ const ProfileCard = () => {
     }
   }, [profile]);
 
-const handleLogout = async () => {
-  const { error } = await supabase.auth.signOut();
-  if (error) {
-    console.error('Error logging out:', error.message);
-  } else {
-    console.log('User logged out successfully');
-    // Redirect to the login page after successful logout
-    navigate('/login'); // Use the path to your login page
-  }
-};
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error('Error logging out:', error.message);
+    } else {
+      console.log('User logged out successfully');
+      // Redirect to the login page after successful logout
+      navigate('/login'); // Use the path to your login page
+    }
+  };
 
   return (
     <div className="p-8 flex flex-col gap-8 w-[800px]">

@@ -23,7 +23,8 @@ const transactionType: { value: string; label: string }[] = [
 type ColumnFilter = { id: string; value: string };
 
 export const TransactionTable = () => {
-  const { userData, loading, updateTransaction,userCategory } = useFetchUserData();
+  const { userData, loading, updateTransaction, userCategory } =
+    useFetchUserData();
 
   const formattedOptions = userCategory?.map(
     (category: { id: string; category: string; colour: string }) => ({
@@ -61,7 +62,7 @@ export const TransactionTable = () => {
     if (userData) {
       const formattedData = userData.map((item) => ({
         ...item,
-      date: new Date(item.date).toLocaleDateString('en-US', {
+        date: new Date(item.date).toLocaleDateString('en-US', {
           year: 'numeric',
           month: 'long',
           day: 'numeric',
@@ -91,9 +92,9 @@ export const TransactionTable = () => {
   });
   if (loading) {
     return (
-      <div className='flex flex-col gap-8'>
+      <div className="flex flex-col gap-8">
         <Skeleton className="h-20" />
-        <div className='flex flex-col gap-4'>
+        <div className="flex flex-col gap-4">
           {Array.from({ length: 3 }, (_, index) => (
             <Skeleton key={index} className="h-[35px] grow" />
           ))}
@@ -175,6 +176,3 @@ export const TransactionTable = () => {
     </div>
   );
 };
-
-
-

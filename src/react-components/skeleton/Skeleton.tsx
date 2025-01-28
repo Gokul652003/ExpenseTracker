@@ -5,10 +5,7 @@ export const Skeleton: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   ...props
 }) => (
   <div
-    className={cx(
-      'animate-pulse bg-tableBgDark rounded-md', 
-      className,
-    )}
+    className={cx('animate-pulse bg-tableBgDark rounded-md', className)}
     {...props}
   />
 );

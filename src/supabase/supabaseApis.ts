@@ -541,7 +541,10 @@ export const useFetchUserData = () => {
 
   // Combine loading and error states
   const loading =
-    isTransactionsLoading || isCategoryLoading || uploadCsvMutaion.isPending ||topIncomeLoading;
+    isTransactionsLoading ||
+    isCategoryLoading ||
+    uploadCsvMutaion.isPending ||
+    topIncomeLoading;
   const error = isTransactionsError || isCategoryError;
 
   return {

@@ -42,13 +42,12 @@ export const EditableDate = ({ getValue, row, column, table }: CellProp) => {
           onChange={(date: Date | null) => {
             if (date) {
               setValue(date);
-            }
-            else{
-              toast.error('Please enter a valid date',{
+            } else {
+              toast.error('Please enter a valid date', {
                 style: {
                   backgroundColor: 'var(--text-color)',
                 },
-              })
+              });
             }
           }}
           onBlur={handleBlur}
