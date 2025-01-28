@@ -379,11 +379,14 @@ export const useFetchUserData = () => {
           );
         }
       }
-
+      const transactionsWithUserId = csvData.map((transaction) => ({
+        ...transaction,
+        user_id: userId, // Add the authenticated user_id here
+      }));
       // Step 4: Insert the CSV transaction data into the `transaction` table
       const { error: transactionError } = await supabase
         .from('transaction')
-        .insert(csvData);
+        .insert(transactionsWithUserId);
 
       if (transactionError) {
         throw new Error(
