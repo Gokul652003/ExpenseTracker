@@ -18,7 +18,7 @@ const EditableCell = ({ getValue, row, column, table }: CellProp) => {
   return (
     <input
       type="number"
-      className="bg-transparent w-24"
+      className="bg-transparent w-24 outline-none"
       value={value}
       onChange={(e) => setValues(String(e.target.value))}
       onBlur={onBlur}

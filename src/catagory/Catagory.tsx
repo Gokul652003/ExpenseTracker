@@ -4,6 +4,7 @@ import { UserCategoryProp } from '../transactions/components/type';
 import { LabelComponent } from './LabelComponent';
 import { supabase } from '../supabase/supabaseClient';
 import { toast } from 'sonner';
+import { Skeleton } from '../react-components/skeleton/Skeleton';
 
 export const Category = () => {
   const { userCategory, loading, deleteCategory, addCategory, updateCategory } =
@@ -54,13 +55,12 @@ export const Category = () => {
 
   const handleAddCategory = () => {
     const newCategory = {
-      category: 'Health',
+      category: '',
       colour: '#00FF00',
     };
     addCategory(newCategory);
   };
 
-  if (loading) return <div>Loading...</div>;
   return (
     <div className="flex flex-col">
       <div className="p-8 flex flex-col gap-2 border border-border">
@@ -73,22 +73,33 @@ export const Category = () => {
       </div>
       <div className="px-8 pt-8 pb-20 w-[498px] flex flex-col gap-6">
         {/* Category List */}
-        {categories?.map((category) => (
-          <LabelComponent
-            key={category.id}
-            category={category}
-            onUpdate={handleUpdateCategory}
-            onDelete={handleDelete}
-          />
-        ))}
-        <div className="flex justify-start">
-          <button
-            onClick={handleAddCategory}
-            className="bg-primary text-white p-2 rounded"
-          >
-            Add Category
-          </button>
-        </div>
+        {loading ? (
+          <>
+            <Skeleton className="h-5" />
+            <Skeleton className="h-5" />
+            <Skeleton className="h-5" />
+            <Skeleton className="h-5" />
+          </>
+        ) : (
+          <>
+            {categories?.map((category) => (
+              <LabelComponent
+                key={category.id}
+                category={category}
+                onUpdate={handleUpdateCategory}
+                onDelete={handleDelete}
+              />
+            ))}
+            <div className="flex justify-start">
+              <button
+                onClick={handleAddCategory}
+                className="bg-primary text-white p-2 rounded"
+              >
+                Add Category
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

@@ -45,9 +45,10 @@ export const LabelComponent: React.FC<{
         >
           <input
             type="color"
+            placeholder="Category name"
             value={editedColor}
             onChange={handleColorChange}
-            className="opacity-0 w-full h-full cursor-pointer"
+            className="opacity-0 w-full h-full cursor-pointer placeholder-secondary"
             title="Select Color"
           />
         </div>
@@ -59,14 +60,16 @@ export const LabelComponent: React.FC<{
               onChange={handleLabelChange}
               onBlur={handleLabelBlur}
               autoFocus
-              className="border rounded text-textColor focus:outline-none bg-transparent w-full"
+              className={
+                'rounded text-textColor  bg-transparent w-full outline-none'
+              }
             />
           ) : (
             <label
-              className="cursor-pointer text-textColor"
+              className={`cursor-pointer w-full  ${editedCategory === '' ? 'text-secondary' : 'text-textColor'}`}
               onClick={() => setIsEditing(true)}
             >
-              {editedCategory}
+              {editedCategory === '' ? 'Category name' : editedCategory}
             </label>
           )}
         </div>

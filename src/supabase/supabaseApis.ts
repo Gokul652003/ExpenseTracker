@@ -44,11 +44,19 @@ export const signOut = () => {
   return supabase.auth.signOut();
 };
 
+const getRandomColor = (): string => {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
 // Fetch user transactions
 const fetchUserProfile = async (
   userId: string,
 ): Promise<TransactionTableData[] | null> => {
-  const { data, error } = await supabase
+  const { data: transactions, error } = await supabase
     .from('transaction')
     .select('id,date,type,amount,notes,category')
     .eq('user_id', userId)
@@ -59,7 +67,7 @@ const fetchUserProfile = async (
     return null;
   }
 
-  return data as TransactionTableData[];
+  return transactions as TransactionTableData[];
 };
 
 // Fetch user categories
@@ -169,7 +177,73 @@ const updateTransaction = async ({ columnId, id, value }: TransactionProp) => {
   }
   return data;
 };
+const fetchCategoryTotalAmounts = async (
+  userId: string,
+  type: 'expense' | 'income',
+) => {
+  const { data: transactionData, error: transactionError } = await supabase
+    .from('transaction')
+    .select('category, amount')
+    .ilike('type', type)
+    .eq('user_id', userId); // Filter by user_id
 
+  if (transactionError) {
+    console.error('Error fetching transaction data:', transactionError.message);
+    return null;
+  }
+
+  // Step 2: Sum the amount for each category
+  const categoryTotals = transactionData?.reduce(
+    (acc, curr) => {
+      const category = curr.category;
+      const amount = parseFloat(curr.amount); // Convert amount to a number
+
+      if (!acc[category]) {
+        acc[category] = 0;
+      }
+
+      acc[category] += amount;
+      return acc;
+    },
+    {} as { [category: string]: number },
+  );
+
+  // Convert the categoryTotals object to an array of categories with their totals
+  const sortedCategories = Object.entries(categoryTotals || {})
+    .map(([category, totalAmount]) => ({
+      category,
+      totalAmount,
+    }))
+    .sort((a, b) => b.totalAmount - a.totalAmount); // Sort by totalAmount in descending order
+
+  // Step 3: Get the top 3 categories
+  const topThreeCategories = sortedCategories.slice(0, 3);
+
+  // Step 4: Fetch colors for each category from the usercategory table
+  const { data: categoryColors, error: categoryError } = await supabase
+    .from('usercategory')
+    .select('category, colour') // Fetch category and its associated colour
+    .eq('user_id', userId);
+
+  if (categoryError) {
+    console.error('Error fetching category colors:', categoryError.message);
+    return topThreeCategories;
+  }
+
+  // Step 5: Add color to each category in the top three categories
+  const topThreeCategoriesWithColor = topThreeCategories.map((categoryData) => {
+    const categoryColor = categoryColors?.find(
+      (colorData) => colorData.category === categoryData.category,
+    )?.colour;
+
+    return {
+      ...categoryData,
+      colour: categoryColor || '#000000', // Default to black if color is not found
+    };
+  });
+
+  return topThreeCategoriesWithColor;
+};
 // Combined hook
 export const useFetchUserData = () => {
   const { session } = useSession();
@@ -254,6 +328,87 @@ export const useFetchUserData = () => {
       toast.success('Category deleted successfully', {
         style: {
           backgroundColor: 'var(--text-color)',
+        },
+      });
+    },
+  });
+
+  // Mutation for updating a transaction
+
+  const uploadCsvMutaion = useMutation({
+    mutationFn: async (csvData: TransactionTableData[]) => {
+      if (!userId) throw new Error('User not authenticated');
+
+      // Step 1: Extract categories from the CSV data
+      const categoriesFromCsv = Array.from(
+        new Set(csvData.map((transaction) => transaction.category)),
+      );
+
+      // Step 2: Fetch existing categories for the user
+      const { data: existingCategories, error: categoryError } = await supabase
+        .from('usercategory')
+        .select('category, colour')
+        .eq('user_id', userId);
+
+      if (categoryError) {
+        throw new Error('Error fetching categories: ' + categoryError.message);
+      }
+
+      const existingCategoriesSet = new Set(
+        existingCategories?.map((cat) => cat.category),
+      );
+      const missingCategories = categoriesFromCsv.filter(
+        (category) => !existingCategoriesSet.has(category),
+      );
+
+      // Step 3: Insert missing categories into the `usercategory` table
+      if (missingCategories.length > 0) {
+        const newCategories = missingCategories.map((category) => ({
+          category,
+          user_id: userId,
+          colour: getRandomColor(), // Assign random color to new categories
+        }));
+
+        const { error: insertError } = await supabase
+          .from('usercategory')
+          .insert(newCategories);
+
+        if (insertError) {
+          throw new Error(
+            'Error adding missing categories: ' + insertError.message,
+          );
+        }
+      }
+
+      // Step 4: Insert the CSV transaction data into the `transaction` table
+      const { error: transactionError } = await supabase
+        .from('transaction')
+        .insert(csvData);
+
+      if (transactionError) {
+        throw new Error(
+          'Error inserting transaction data: ' + transactionError.message,
+        );
+      }
+
+      return 'CSV uploaded successfully';
+    },
+    onSuccess: () => {
+      if (userId) {
+        // Invalidate queries to refresh the data
+        queryClient.invalidateQueries({ queryKey: ['transactions', userId] });
+        queryClient.invalidateQueries({ queryKey: ['userCategory', userId] });
+      }
+      toast.success('CSV uploaded successfully', {
+        style: {
+          backgroundColor: 'var(--text-color)',
+        },
+      });
+    },
+    onError: (error: Error) => {
+      toast.error('Error uploading CSV: ' + error.message, {
+        style: {
+          backgroundColor: 'var(--error-color)',
         },
       });
     },
@@ -352,11 +507,24 @@ export const useFetchUserData = () => {
       }),
   });
 
+  const { data: topExpenseCategories, isLoading: topExpenseLoading } = useQuery(
+    {
+      queryKey: ['top3ExpenseCategories', userId],
+      queryFn: () => fetchCategoryTotalAmounts(userId!, 'expense'),
+      enabled: !!userId, // Fetch only if userId is defined
+    },
+  );
+
+  const { data: topIncomeCategories, isLoading: topIncomeLoading } = useQuery({
+    queryKey: ['top3IncomeCategories', userId],
+    queryFn: () => fetchCategoryTotalAmounts(userId!, 'income'),
+    enabled: !!userId, // Fetch only if userId is defined
+  });
   // Derived calculations for total income, expense, and balance
   const totalIncome = useMemo(() => {
     return userData
       ? userData
-          .filter((transaction) => transaction.type === 'Income')
+          .filter((transaction) => transaction.type.toLowerCase() === 'income')
           .reduce((sum, transaction) => sum + parseFloat(transaction.amount), 0)
       : 0;
   }, [userData]);
@@ -364,7 +532,7 @@ export const useFetchUserData = () => {
   const totalExpense = useMemo(() => {
     return userData
       ? userData
-          .filter((transaction) => transaction.type === 'Expense')
+          .filter((transaction) => transaction.type.toLowerCase() === 'expense')
           .reduce((sum, transaction) => sum + parseFloat(transaction.amount), 0)
       : 0;
   }, [userData]);
@@ -372,7 +540,11 @@ export const useFetchUserData = () => {
   const totalBalance = totalIncome - totalExpense;
 
   // Combine loading and error states
-  const loading = isTransactionsLoading || isCategoryLoading;
+  const loading =
+    isTransactionsLoading ||
+    isCategoryLoading ||
+    uploadCsvMutaion.isPending ||
+    topIncomeLoading;
   const error = isTransactionsError || isCategoryError;
 
   return {
@@ -387,6 +559,12 @@ export const useFetchUserData = () => {
     deleteCategory: deleteCategoryMutation.mutate,
     updateTransaction: updateTransactionMutation.mutate,
     updateCategory: updateCategoryMutation.mutate,
+    uploadCsv: uploadCsvMutaion.mutate,
+    topThreeExpenseCategories: topExpenseCategories,
+    topThreeInomeCategories: topIncomeCategories,
+    topExpenceLoading: topExpenseLoading,
+
+    uploadCsvProgress: uploadCsvMutaion.isPending,
 
     loading,
     error,

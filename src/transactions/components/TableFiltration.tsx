@@ -6,6 +6,8 @@ import { supabase } from '../../supabase/supabaseClient';
 import { useSession } from '../../Routes/useSession';
 import { TransactionTableData } from './type';
 import { toast } from 'sonner';
+import { useFetchUserData } from '../../supabase/supabaseApis';
+import CsvUploaderComponent from '../../supabase/CsvModal';
 
 type SesstionFilter = {
   id: string;
@@ -45,7 +47,7 @@ export const TableFiltrations: React.FC<TableFitrationProps> = ({
       return [...prevFilters, { id, value }];
     });
   };
-
+  const [isModal, setIsmodal] = useState(false);
   // const getFormattedDate = () => {
   //   const today = new Date();
   //   const year = today.getFullYear();
@@ -54,6 +56,7 @@ export const TableFiltrations: React.FC<TableFitrationProps> = ({
   //   return `${year}-${month}-${day}`;
   // };
   const { session } = useSession();
+  const { userData } = useFetchUserData();
 
   const addTransaction = async (transactionData: {
     category: string;
@@ -188,6 +191,18 @@ export const TableFiltrations: React.FC<TableFitrationProps> = ({
         >
           New
         </button>
+        {userData && userData?.length === 0 && (
+          <button
+            className="px-6  bg-green-500 text-textColor rounded"
+            onClick={() => setIsmodal(true)}
+          >
+            Upload CSV
+          </button>
+        )}
+        <CsvUploaderComponent
+          isModalOpen={isModal}
+          setIsModalOpen={setIsmodal}
+        />
       </div>
       {isDeleteModalOpen && (
         <DeleteTransactionModal

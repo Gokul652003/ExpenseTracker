@@ -1,4 +1,5 @@
 import { TransactionChart } from '../chart/TransactionChart';
+import { Skeleton } from '../react-components/skeleton/Skeleton';
 import { useFetchUserData } from '../supabase/supabaseApis';
 import { Button } from './components/Button';
 import { Card } from './components/Card';
@@ -6,9 +7,18 @@ import { Card } from './components/Card';
 import { useState } from 'react';
 
 export const DashBoard = () => {
-  const [selectedItem, setSelectedItem] = useState<string>('All');
-  const { totalIncome, totalExpense, totalBalance, loading } =
-    useFetchUserData();
+  const [chartFilter, setChartFilter] = useState<
+    'All Time' | '12 Months' | '30 Days' | '7 Days' | '24 Hours' | 'custom'
+  >('All Time');
+  const {
+    totalIncome,
+    totalExpense,
+    totalBalance,
+    loading,
+    topThreeExpenseCategories,
+    topThreeInomeCategories,
+    topExpenceLoading,
+  } = useFetchUserData();
   const timePeriods = [
     'All Time',
     '12 Months',
@@ -17,7 +27,23 @@ export const DashBoard = () => {
     '24 Hours',
   ];
   const dateFilters = ['From Date', 'To Date'];
-  // console.log(sortedCategories);
+  const a = [
+    {
+      category: 'income',
+      totalAmount: totalIncome,
+      colour: '#008000',
+    },
+    {
+      category: 'expense',
+      totalAmount: totalExpense,
+      colour: '#FF0000',
+    },
+    {
+      category: 'savings',
+      totalAmount: 0,
+      colour: '#FF0000',
+    },
+  ];
   return (
     <div>
       <div className="p-8 flex flex-col gap-2 border border-border">
@@ -30,11 +56,34 @@ export const DashBoard = () => {
         </span>
       </div>
       <div className="p-8 flex flex-col gap-[52px]">
-        <div className="flex gap-6">
-          <Card type="Balance" amount={totalBalance} isLoading={loading} />
-          <Card type="Income" amount={totalIncome} isLoading={loading} />
-          <Card type="Expense" amount={totalExpense} isLoading={loading} />
-        </div>
+        {loading ? (
+          <div className="flex gap-6">
+            <Skeleton className="h-[294px] flex-1" />
+            <Skeleton className="h-[294px] flex-1" />
+            <Skeleton className="h-[294px] flex-1" />
+          </div>
+        ) : (
+          <div className="flex gap-6 h-full">
+            <Card
+              type="Balance"
+              amount={totalBalance}
+              isLoading={loading}
+              topcategory={a}
+            />
+            <Card
+              type="Income"
+              amount={totalIncome}
+              isLoading={loading}
+              topcategory={topThreeInomeCategories ?? []}
+            />
+            <Card
+              type="Expense"
+              amount={totalExpense}
+              isLoading={loading || topExpenceLoading}
+              topcategory={topThreeExpenseCategories ?? []}
+            />
+          </div>
+        )}
         <div className="flex flex-col gap-9">
           <div className="p-8 flex flex-col gap-2">
             <span className="text-textColor text-4xl font-medium">
@@ -54,8 +103,18 @@ export const DashBoard = () => {
                   <Button
                     key={period}
                     text={period}
-                    isSelected={selectedItem === period}
-                    onClick={() => setSelectedItem(period)}
+                    isSelected={chartFilter === period}
+                    onClick={() =>
+                      setChartFilter(
+                        period as
+                          | 'All Time'
+                          | '12 Months'
+                          | '30 Days'
+                          | '7 Days'
+                          | '24 Hours'
+                          | 'custom',
+                      )
+                    }
                   />
                 ))}
               </div>
@@ -68,7 +127,7 @@ export const DashBoard = () => {
             </div>
             <div>
               {/* <TransactionChart /> */}
-              <TransactionChart />
+              <TransactionChart chartFilter={chartFilter} />
             </div>
           </div>
         </div>

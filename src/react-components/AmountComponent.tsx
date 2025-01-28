@@ -14,7 +14,7 @@ export const AmountComponent = ({
       className="py-2 px-4 border-l border-solid w-full"
       style={{ borderColor: color }}
     >
-      <div className="font-primary font-medium text-base text-secondary">
+      <div className="font-primary font-medium text-base text-secondary capitalize">
         {label}
       </div>
       <div className="font-primary font-semibold text-xl text-text">

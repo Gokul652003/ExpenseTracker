@@ -1,13 +1,19 @@
 import { AmountComponent } from '../../react-components/AmountComponent';
 import lodingGif from '@/assets/loading-gif.gif';
+interface TopCategory {
+  category: string;
+  totalAmount: number;
+  colour?: string;
+}
 
 interface CardProp {
   type: 'Income' | 'Balance' | 'Expense';
   amount: number;
   isLoading?: boolean;
+  topcategory?: TopCategory[]; // Only for Expense Card
 }
 
-export const Card = ({ type, amount, isLoading }: CardProp) => {
+export const Card = ({ type, amount, isLoading, topcategory }: CardProp) => {
   return (
     <div className="p-6 flex flex-col gap-9 h-full border border-border rounded-2xl justify-center flex-1">
       <div className="flex justify-between text-secondary text-sm font-normal">
@@ -31,9 +37,14 @@ export const Card = ({ type, amount, isLoading }: CardProp) => {
         )}
       </div>
       <div className="flex">
-        <AmountComponent label="income" amount={254785} color="#ACDE49" />
-        <AmountComponent label="income" amount={254785} color="#9D35A3" />
-        <AmountComponent label="income" amount={254785} color="#AC6F6F" />
+        {topcategory?.map((item, index) => (
+          <AmountComponent
+            label={item.category}
+            amount={item.totalAmount}
+            color={item.colour}
+            key={index}
+          />
+        ))}
       </div>
     </div>
   );
