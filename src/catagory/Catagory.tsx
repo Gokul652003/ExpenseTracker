@@ -5,8 +5,10 @@ import { LabelComponent } from './LabelComponent';
 import { supabase } from '../supabase/supabaseClient';
 import { toast } from 'sonner';
 import { Skeleton } from '../react-components/skeleton/Skeleton';
+import { useSession } from '../Routes/useSession';
 
 export const Category = () => {
+  const {session}=useSession()
   const { userCategory, loading, deleteCategory, addCategory, updateCategory } =
     useFetchUserData();
   const [categories, setCategories] = useState<UserCategoryProp[]>([]);
@@ -37,6 +39,7 @@ export const Category = () => {
     const { data: transactions, error: fetchError } = await supabase
       .from('transaction')
       .select('id')
+      .eq('user_id',session?.user.id)
       .eq('category', categoryToDelete.category); // Check if there are transactions with this category
 
     if (fetchError) {
