@@ -540,8 +540,15 @@ export const useFetchUserData = () => {
       : 0;
   }, [userData]);
 
-  const totalBalance = totalIncome - totalExpense;
+  const totalSavings = useMemo(() => {
+    return userData
+      ? userData
+          .filter((transaction) => transaction.type.toLowerCase() === 'savings')
+          .reduce((sum, transaction) => sum + parseFloat(transaction.amount), 0)
+      : 0;
+  }, [userData]);
 
+const totalBalance = totalIncome - totalExpense - totalSavings;
   // Combine loading and error states
   const loading =
     isTransactionsLoading ||
@@ -556,6 +563,7 @@ export const useFetchUserData = () => {
     totalIncome,
     totalExpense,
     totalBalance,
+    totalSavings,
     addTransaction: addTransactionMutation.mutate,
     addCategory: addCategoryMutation.mutate,
     deleteTransaction: deleteTransactionMutation.mutate,

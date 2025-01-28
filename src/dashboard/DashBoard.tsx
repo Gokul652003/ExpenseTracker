@@ -18,6 +18,7 @@ export const DashBoard = () => {
     topThreeExpenseCategories,
     topThreeInomeCategories,
     topExpenceLoading,
+    totalSavings
   } = useFetchUserData();
   const timePeriods = [
     'All Time',
@@ -40,7 +41,7 @@ export const DashBoard = () => {
     },
     {
       category: 'savings',
-      totalAmount: 0,
+      totalAmount: totalSavings,
       colour: '#FF0000',
     },
   ];

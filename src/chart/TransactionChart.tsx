@@ -87,6 +87,8 @@ export const TransactionChart = ({ chartFilter }: TransactionChartProp) => {
       cumulativeAmount += amount; // Add to cumulative amount for income
     } else if (item.type.toLowerCase() === 'expense') {
       cumulativeAmount -= amount; // Subtract from cumulative amount for expense
+    } else if (item.type.toLowerCase() === 'savings') {
+      cumulativeAmount -= amount; // Subtract from cumulative amount for expense
     }
 
     // Store the cumulative amount at each step

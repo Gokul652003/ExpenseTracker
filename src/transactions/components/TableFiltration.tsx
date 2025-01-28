@@ -29,6 +29,7 @@ export const TableFiltrations: React.FC<TableFitrationProps> = ({
   setData,
   table,
 }) => {
+  const {userCategory}=useFetchUserData()
   const selectedIds = table
     .getSelectedRowModel()
     .rows.map((row) => row.original.id);
@@ -48,13 +49,7 @@ export const TableFiltrations: React.FC<TableFitrationProps> = ({
     });
   };
   const [isModal, setIsmodal] = useState(false);
-  // const getFormattedDate = () => {
-  //   const today = new Date();
-  //   const year = today.getFullYear();
-  //   const month = String(today.getMonth() + 1).padStart(2, '0');
-  //   const day = String(today.getDate()).padStart(2, '0');
-  //   return `${year}-${month}-${day}`;
-  // };
+
   const { session } = useSession();
   const { userData } = useFetchUserData();
 
@@ -128,7 +123,7 @@ export const TableFiltrations: React.FC<TableFitrationProps> = ({
         className="bg-transparent outline-none appearance-none w-full"
         onChange={(e) => handleSelectChange(id, e.target.value)}
       >
-        <option value="">{placeholder}</option>
+        <option value="" className='capitalize'>{placeholder}</option>
         {options.map((option) => (
           <option
             key={option}
@@ -140,6 +135,7 @@ export const TableFiltrations: React.FC<TableFitrationProps> = ({
               fontFamily: 'Arial, sans-serif',
               position: 'absolute',
               paddingBlock: '10px',
+              textTransform:'capitalize'
             }}
           >
             {option}
@@ -152,14 +148,8 @@ export const TableFiltrations: React.FC<TableFitrationProps> = ({
   return (
     <div className="flex justify-between">
       <div className="flex gap-3">
-        {renderDropdown('category', 'Category', [
-          'Groceries',
-          'Salary',
-          'Transport',
-          'Dining',
-          'Freelance',
-        ])}
-        {renderDropdown('type', 'Type', ['Income', 'Expense'])}
+        {renderDropdown('category', 'Category', userCategory?.map(item => item.category) ?? [])}
+        {renderDropdown('type', 'Type', ['Income', 'Expense','Savings'])}
       </div>
       <div className="flex gap-4">
         <div className="flex gap-1.5 items-center p-2 border border-border w-[250px] text-secondary rounded-lg">
