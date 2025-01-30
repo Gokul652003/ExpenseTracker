@@ -18,7 +18,7 @@ export const DashBoard = () => {
     topThreeExpenseCategories,
     topThreeInomeCategories,
     topExpenceLoading,
-    totalSavings
+    totalSavings,
   } = useFetchUserData();
   const timePeriods = [
     'All Time',

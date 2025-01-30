@@ -548,7 +548,7 @@ export const useFetchUserData = () => {
       : 0;
   }, [userData]);
 
-const totalBalance = totalIncome - totalExpense - totalSavings;
+  const totalBalance = totalIncome - totalExpense - totalSavings;
   // Combine loading and error states
   const loading =
     isTransactionsLoading ||
