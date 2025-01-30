@@ -37,14 +37,22 @@ export const Card = ({ type, amount, isLoading, topcategory }: CardProp) => {
         )}
       </div>
       <div className="flex">
-        {topcategory?.map((item, index) => (
-          <AmountComponent
-            label={item.category}
-            amount={item.totalAmount}
-            color={item.colour}
-            key={index}
-          />
-        ))}
+        {topcategory?.length !== 0 ? (
+          topcategory?.map((item, index) => (
+            <AmountComponent
+              label={item.category}
+              amount={item.totalAmount}
+              color={item.colour}
+              key={index}
+            />
+          ))
+        ) : (
+          <>
+            <AmountComponent label="---" color="#ffff" amount="---" />
+            <AmountComponent label="---" color="#ffff" amount="---" />
+            <AmountComponent label="---" color="#ffff" amount="---" />
+          </>
+        )}
       </div>
     </div>
   );
