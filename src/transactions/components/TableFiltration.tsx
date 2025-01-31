@@ -29,7 +29,7 @@ export const TableFiltrations: React.FC<TableFitrationProps> = ({
   setData,
   table,
 }) => {
-  const {userCategory}=useFetchUserData()
+  const { userCategory } = useFetchUserData();
   const selectedIds = table
     .getSelectedRowModel()
     .rows.map((row) => row.original.id);
@@ -123,7 +123,9 @@ export const TableFiltrations: React.FC<TableFitrationProps> = ({
         className="bg-transparent outline-none appearance-none w-full"
         onChange={(e) => handleSelectChange(id, e.target.value)}
       >
-        <option value="" className='capitalize'>{placeholder}</option>
+        <option value="" className="capitalize">
+          {placeholder}
+        </option>
         {options.map((option) => (
           <option
             key={option}
@@ -135,7 +137,7 @@ export const TableFiltrations: React.FC<TableFitrationProps> = ({
               fontFamily: 'Arial, sans-serif',
               position: 'absolute',
               paddingBlock: '10px',
-              textTransform:'capitalize'
+              textTransform: 'capitalize',
             }}
           >
             {option}
@@ -148,8 +150,12 @@ export const TableFiltrations: React.FC<TableFitrationProps> = ({
   return (
     <div className="flex justify-between">
       <div className="flex gap-3">
-        {renderDropdown('category', 'Category', userCategory?.map(item => item.category) ?? [])}
-        {renderDropdown('type', 'Type', ['Income', 'Expense','Savings'])}
+        {renderDropdown(
+          'category',
+          'Category',
+          userCategory?.map((item) => item.category) ?? [],
+        )}
+        {renderDropdown('type', 'Type', ['Income', 'Expense', 'Savings'])}
       </div>
       <div className="flex gap-4">
         <div className="flex gap-1.5 items-center p-2 border border-border w-[250px] text-secondary rounded-lg">
