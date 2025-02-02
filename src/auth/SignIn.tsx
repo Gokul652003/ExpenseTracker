@@ -97,9 +97,9 @@ const SignIn = () => {
                 {...register('password')}
                 rightIcon={
                   isShowPassword ? (
-                    <FaEye className="text-text size-5" />
-                  ) : (
                     <FaEyeSlash className="text-text size-5" />
+                  ) : (
+                    <FaEye className="text-text size-5" />
                   )
                 }
                 rightIconOnClick={showPasswordOnClick}
@@ -112,9 +112,9 @@ const SignIn = () => {
                 {...register('confirmPassword')}
                 rightIcon={
                   isShowConfirmPassword ? (
-                    <FaEye className="text-text size-5" />
-                  ) : (
                     <FaEyeSlash className="text-text size-5" />
+                  ) : (
+                    <FaEye className="text-text size-5" />
                   )
                 }
                 rightIconOnClick={showConfirmPasswordOnClick}

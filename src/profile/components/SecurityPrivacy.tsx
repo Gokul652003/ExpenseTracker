@@ -62,9 +62,9 @@ export const SecurityPrivacy = () => {
             type={isShowPassword ? 'text' : 'password'}
             rightIcon={
               isShowPassword ? (
-                <FaEye className="text-text size-5" />
-              ) : (
                 <FaEyeSlash className="text-text size-5" />
+              ) : (
+                <FaEye className="text-text size-5" />
               )
             }
             rightIconOnClick={showPasswordOnClick}
@@ -78,9 +78,9 @@ export const SecurityPrivacy = () => {
             type={isShowConfirmPassword ? 'text' : 'password'}
             rightIcon={
               isShowConfirmPassword ? (
-                <FaEye className="text-text size-5" />
-              ) : (
                 <FaEyeSlash className="text-text size-5" />
+              ) : (
+                <FaEye className="text-text size-5" />
               )
             }
             rightIconOnClick={showConfirmPasswordOnClick}
