@@ -62,10 +62,10 @@ const Login = () => {
     resolver: yupResolver(useSignInSchema()),
   });
 
-  const [showPassword, setShowPassword] = useState(false);
+  const [isShowPassword, setIsShowPassword] = useState(false);
 
-  const rightIconOnClick = () => {
-    setShowPassword(!showPassword);
+  const showPasswordOnClick = () => {
+    setIsShowPassword(!isShowPassword);
   };
 
   return (
@@ -97,16 +97,16 @@ const Login = () => {
               />
               <TextField
                 label="Password"
-                type={showPassword ? 'text' : 'password'}
+                type={isShowPassword ? 'text' : 'password'}
                 {...register('password')}
                 rightIcon={
-                  showPassword ? (
+                  isShowPassword ? (
                     <FaEye className="text-text size-5" />
                   ) : (
                     <FaEyeSlash className="text-text size-5" />
                   )
                 }
-                rightIconOnClick={rightIconOnClick}
+                rightIconOnClick={showPasswordOnClick}
                 variant={errors.password && 'destructive'}
                 description={errors.password?.message}
               />
