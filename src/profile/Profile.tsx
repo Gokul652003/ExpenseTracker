@@ -1,4 +1,5 @@
 import ProfileCard from './components/ProfileCard';
+import { SecurityPrivacy } from './components/SecurityPrivacy';
 
 const Profile = () => {
   return (
@@ -13,6 +14,7 @@ const Profile = () => {
         </span>
       </div>
       <ProfileCard />
+      <SecurityPrivacy />
     </div>
   );
 };
