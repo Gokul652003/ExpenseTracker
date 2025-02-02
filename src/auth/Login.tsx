@@ -4,6 +4,9 @@ import AuthLayout from './components/AuthLayout';
 import expenseTrackerLogo from '@/assets/expense-tracker-logo.svg';
 import { FcGoogle } from 'react-icons/fc';
 import { RiNotionFill } from 'react-icons/ri';
+import { FaEyeSlash } from 'react-icons/fa';
+import { FaEye } from 'react-icons/fa';
+
 import {
   signInWithEmailAndPassword,
   signInWithGoogle,
@@ -59,6 +62,12 @@ const Login = () => {
     resolver: yupResolver(useSignInSchema()),
   });
 
+  const [isShowPassword, setIsShowPassword] = useState(false);
+
+  const showPasswordOnClick = () => {
+    setIsShowPassword(!isShowPassword);
+  };
+
   return (
     <AuthLayout>
       <form
@@ -88,8 +97,16 @@ const Login = () => {
               />
               <TextField
                 label="Password"
-                type="password"
+                type={isShowPassword ? 'text' : 'password'}
                 {...register('password')}
+                rightIcon={
+                  isShowPassword ? (
+                    <FaEyeSlash className="text-text size-5" />
+                  ) : (
+                    <FaEye className="text-text size-5" />
+                  )
+                }
+                rightIconOnClick={showPasswordOnClick}
                 variant={errors.password && 'destructive'}
                 description={errors.password?.message}
               />

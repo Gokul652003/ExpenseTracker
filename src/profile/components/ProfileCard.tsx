@@ -65,7 +65,6 @@ const ProfileCard = () => {
   const handleBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setProfileDetails((prev) => ({ ...prev, [name]: value }));
-    console.log('hiiiiiiiiu');
 
     const { data: user } = await supabase.auth.getUser();
     if (user.user?.id) {

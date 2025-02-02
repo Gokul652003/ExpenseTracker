@@ -4,6 +4,8 @@ import AuthLayout from './components/AuthLayout';
 import expenseTrackerLogo from '@/assets/expense-tracker-logo.svg';
 import { FcGoogle } from 'react-icons/fc';
 import { RiNotionFill } from 'react-icons/ri';
+import { FaEyeSlash } from 'react-icons/fa';
+import { FaEye } from 'react-icons/fa';
 import {
   signInWithGoogle,
   signInWithNotion,
@@ -50,6 +52,18 @@ const SignIn = () => {
       </AuthLayout>
     );
   }
+
+  const [isShowPassword, setIsShowPassword] = useState(false);
+  const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
+
+  const showPasswordOnClick = () => {
+    setIsShowPassword(!isShowPassword);
+  };
+
+  const showConfirmPasswordOnClick = () => {
+    setIsShowConfirmPassword(!isShowConfirmPassword);
+  };
+
   return (
     <AuthLayout>
       <form
@@ -79,15 +93,31 @@ const SignIn = () => {
               />
               <TextField
                 label="Password"
-                type="password"
+                type={isShowPassword ? 'text' : 'password'}
                 {...register('password')}
+                rightIcon={
+                  isShowPassword ? (
+                    <FaEyeSlash className="text-text size-5" />
+                  ) : (
+                    <FaEye className="text-text size-5" />
+                  )
+                }
+                rightIconOnClick={showPasswordOnClick}
                 description={errors.password?.message || ' '}
                 variant={errors.password && 'destructive'}
               />
               <TextField
                 label="Confirm Password"
-                type="password"
+                type={isShowConfirmPassword ? 'text' : 'password'}
                 {...register('confirmPassword')}
+                rightIcon={
+                  isShowConfirmPassword ? (
+                    <FaEyeSlash className="text-text size-5" />
+                  ) : (
+                    <FaEye className="text-text size-5" />
+                  )
+                }
+                rightIconOnClick={showConfirmPasswordOnClick}
                 description={errors.confirmPassword?.message || ' '}
                 variant={errors.confirmPassword && 'destructive'}
               />

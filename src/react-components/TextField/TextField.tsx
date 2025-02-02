@@ -7,15 +7,17 @@ import styles from './TextField.module.scss';
 interface InputIconProps {
   icon: React.ReactNode;
   position: 'left' | 'right';
+  onClick?: () => void;
 }
 
-const InputIcon: React.FC<InputIconProps> = ({ icon, position }) => {
+const InputIcon: React.FC<InputIconProps> = ({ icon, position, onClick }) => {
   return (
     <span
       className={cx(
         styles.icon,
         position === 'left' ? styles.iconLeft : styles.iconRight,
       )}
+      onClick={onClick}
     >
       {icon}
     </span>
@@ -54,6 +56,7 @@ export interface TextFieldProps
     VariantProps<typeof variants> {
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
+  rightIconOnClick?: () => void;
   label?: string;
   description?: string;
 }
@@ -69,6 +72,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
       leftIcon,
       required,
       rightIcon,
+      rightIconOnClick,
       variant,
       defaultValue,
       ...rest
@@ -104,7 +108,13 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
             id={inputID}
             defaultValue={defaultValue}
           />
-          {rightIcon && <InputIcon position="right" icon={rightIcon} />}
+          {rightIcon && (
+            <InputIcon
+              position="right"
+              icon={rightIcon}
+              onClick={rightIconOnClick}
+            />
+          )}
         </div>
         {description && (
           <span className={styles.description}>{description}</span>
