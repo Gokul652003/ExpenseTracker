@@ -7,10 +7,10 @@ import styles from './TextField.module.scss';
 interface InputIconProps {
   icon: React.ReactNode;
   position: 'left' | 'right';
-  onClick?:()=>void;
+  onClick?: () => void;
 }
 
-const InputIcon: React.FC<InputIconProps> = ({ icon, position, onClick}) => {
+const InputIcon: React.FC<InputIconProps> = ({ icon, position, onClick }) => {
   return (
     <span
       className={cx(
@@ -56,7 +56,7 @@ export interface TextFieldProps
     VariantProps<typeof variants> {
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
-  rightIconOnClick?:()=>void;
+  rightIconOnClick?: () => void;
   label?: string;
   description?: string;
 }
@@ -108,7 +108,13 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
             id={inputID}
             defaultValue={defaultValue}
           />
-          {rightIcon && <InputIcon position="right" icon={rightIcon} onClick={rightIconOnClick}/>}
+          {rightIcon && (
+            <InputIcon
+              position="right"
+              icon={rightIcon}
+              onClick={rightIconOnClick}
+            />
+          )}
         </div>
         {description && (
           <span className={styles.description}>{description}</span>
