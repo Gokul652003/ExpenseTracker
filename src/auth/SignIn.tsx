@@ -54,12 +54,11 @@ const SignIn = () => {
   }
 
   const [isShowPassword, setIsShowPassword] = useState(false);
+  const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
 
   const showPasswordOnClick = () => {
     setIsShowPassword(!isShowPassword);
   };
-
-  const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
 
   const showConfirmPasswordOnClick = () => {
     setIsShowConfirmPassword(!isShowConfirmPassword);
