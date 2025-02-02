@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { TextField } from '../../react-components/TextField/TextField';
 import { supabase } from '../../supabase/supabaseClient';
 import { toast } from 'sonner';
+import { FaEyeSlash } from 'react-icons/fa';
+import { FaEye } from 'react-icons/fa';
 
 export const SecurityPrivacy = () => {
   const [newPassword, setNewPassword] = useState('');
@@ -40,13 +42,32 @@ export const SecurityPrivacy = () => {
     }
   };
 
+  const [isShowPassword, setIsShowPassword] = useState(false);
+  const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
+
+  const showPasswordOnClick = () => {
+    setIsShowPassword(!isShowPassword);
+  };
+
+  const showConfirmPasswordOnClick = () => {
+    setIsShowConfirmPassword(!isShowConfirmPassword);
+  };
+
   return (
     <div className="flex flex-col gap-8 p-8 w-[800px]">
       <h1 className="text-2xl text-textColor">Security & Privacy</h1>
       <div className="flex gap-3 pb-5">
         <div className="flex-1">
           <TextField
-            type="password"
+            type={isShowPassword ? 'text' : 'password'}
+            rightIcon={
+              isShowPassword ? (
+                <FaEye className="text-text size-5" />
+              ) : (
+                <FaEyeSlash className="text-text size-5" />
+              )
+            }
+            rightIconOnClick={showPasswordOnClick}
             label="New Password"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
@@ -54,7 +75,15 @@ export const SecurityPrivacy = () => {
         </div>
         <div className="flex-1">
           <TextField
-            type="password"
+            type={isShowConfirmPassword ? 'text' : 'password'}
+            rightIcon={
+              isShowConfirmPassword ? (
+                <FaEye className="text-text size-5" />
+              ) : (
+                <FaEyeSlash className="text-text size-5" />
+              )
+            }
+            rightIconOnClick={showConfirmPasswordOnClick}
             label="Confirm New Password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
