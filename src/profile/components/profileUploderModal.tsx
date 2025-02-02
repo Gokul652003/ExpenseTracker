@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import Cropper from 'react-easy-crop';
 import getCroppedImg from './cropImage';
+import { supabase } from '../../supabase/supabaseClient';
 
 interface ProfileUploaderModalProps {
   isOpen: boolean;
@@ -47,11 +48,46 @@ export const ProfileUploaderModal = ({
         image,
         croppedAreaPixels as unknown as Crop,
       );
-      setProfileImage(croppedImg);
+
+      // Convert to Blob
+      const response = await fetch(croppedImg ?? ''); // Add null check before passing to fetch
+      const blob = await response.blob();
+      const fileName = `profile_${Date.now()}.png`;
+
+      // Upload to Supabase Storage
+      const { error } = await supabase.storage
+        .from('profiles') // Bucket name
+        .upload(fileName, blob, { contentType: 'image/png' });
+
+      if (error) {
+        console.error('Error uploading image:', error.message);
+        return;
+      }
+
+      // Get the public URL of the uploaded image
+      const { data: publicUrl } = supabase.storage
+        .from('profiles')
+        .getPublicUrl(fileName);
+      if (publicUrl) {
+        // Update profile in database
+        const { data: user, error: userError } = await supabase.auth.getUser();
+        if (userError || !user.user?.id) return;
+
+        const { error: updateError } = await supabase
+          .from('profiles')
+          .update({ profile_image: publicUrl.publicUrl })
+          .eq('id', user.user.id);
+
+        if (updateError) {
+          console.error('Error updating profile:', updateError.message);
+        } else {
+          setProfileImage(publicUrl.publicUrl);
+        }
+      }
+
       setIsOpen(false);
     }
   };
-
   return (
     isOpen && (
       <div className="absolute top-0 left-0 right-0 bottom-0 bg-black bg-opacity-60 flex justify-center items-center z-50">

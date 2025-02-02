@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import menuIcon from '@/assets/menuIcon.svg';
 import menuIconIsActive from '@/assets/menuActive.svg';
 import transactionIsActiveIcon from '@/assets/navIconTwo.svg';
@@ -10,10 +10,33 @@ import { UserComponent } from '../react-components/User/UserComponent';
 import { useSession } from '../Routes/useSession';
 import catagoryLogo from '@/assets/catagory.svg';
 import catagoryActiveLogo from '@/assets/catagoryActive.svg';
+import { supabase } from '../supabase/supabaseClient';
 
 const Sidebar: React.FC = () => {
   const navigate = useNavigate();
-  const { profile, loading } = useSession();
+  const { profile, loading, session } = useSession();
+  const [userProfileImage, setUserProfileImage] = useState<string | null>(null);
+
+  // Fetch user profile image from the profiles table
+  useEffect(() => {
+    const fetchProfileImage = async () => {
+      if (session?.user.id) {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('profile_image')
+          .eq('id', session.user.id)
+          .single(); // Fetch the single profile image for the user
+        console.log(data);
+        if (error) {
+          console.error('Error fetching profile image:', error.message);
+        } else {
+          setUserProfileImage(data?.profile_image || null); // Set profile image or null if no image
+        }
+      }
+    };
+
+    fetchProfileImage();
+  }, [session]);
   return (
     <div
       className={`bg-bg text-white shadow-lg border-r border-border p-10 h-full`}
@@ -62,7 +85,7 @@ const Sidebar: React.FC = () => {
               <UserComponent
                 isDashboardOpen={false}
                 onClick={() => navigate('/profile')}
-                userAvatar={profile}
+                userAvatar={userProfileImage || profile}
                 isLoading={loading}
               />
             </div>

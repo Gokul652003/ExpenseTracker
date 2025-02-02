@@ -9,6 +9,8 @@ import {
   Tooltip,
   Legend,
   ChartOptions,
+  Filler,
+  ScriptableContext,
 } from 'chart.js';
 import { useFetchUserData } from '../supabase/supabaseApis';
 
@@ -20,6 +22,7 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
+  Filler,
 );
 
 interface TransactionChartProp {
@@ -70,9 +73,28 @@ export const TransactionChart = ({ chartFilter }: TransactionChartProp) => {
   const reversedData = [...filteredData].reverse();
 
   // Get transaction dates (formatted as YYYY-MM-DD)
-  const dates = reversedData?.map(
-    (item) => new Date(item.date).toISOString().split('T')[0],
-  );
+  const dates = reversedData?.map((item) => {
+    const date = new Date(item.date);
+    const monthNames = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ];
+    const day = date.getDate();
+    const month = monthNames[date.getMonth()];
+    const year = date.getFullYear();
+
+    return `${day < 10 ? '0' : ''}${day}-${month}-${year}`;
+  });
 
   // Initialize variables for cumulative amount
   let cumulativeAmount = 0;
@@ -109,7 +131,23 @@ export const TransactionChart = ({ chartFilter }: TransactionChartProp) => {
         label: 'Cumulative Amount (Income & Expense)',
         data: cumulativeData, // Use cumulative data for the chart
         borderColor: '#fff',
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        backgroundColor: (context: ScriptableContext<'line'>) => {
+          const chart = context.chart;
+          const { ctx, chartArea } = chart;
+          if (!chartArea) return; // Ensure the chart area is defined
+
+          // Create the exact linear gradient as specified
+          const gradient = ctx.createLinearGradient(
+            0,
+            chartArea.top,
+            0,
+            chartArea.bottom,
+          );
+          gradient.addColorStop(0.4388, 'rgba(192, 103, 230, 0.1)'); // 43.88% point
+          gradient.addColorStop(1, 'rgba(255, 255, 255, 0.00)'); // 100% point (transparent)
+
+          return gradient;
+        },
         borderWidth: 2,
         pointBackgroundColor: 'rgba(47, 47, 47, 1)',
         pointBorderColor: '#fff',
